@@ -207,13 +207,13 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
         print("Skipping source file ", old_abs_file_path_str)
         print()
 
-def process_flattened_list(flat_list, output_dir_path_str):
+def process_flattened_list(flat_list, output_content_dir_path_str):
 
     # Remove and recreate the output directory.
 
-    #print(output_dir_path_str)
-    shutil.rmtree(output_dir_path_str, ignore_errors=True)
-    os.mkdir(output_dir_path_str)
+    #print(output_content_dir_path_str)
+    shutil.rmtree(output_content_dir_path_str, ignore_errors=True)
+    os.mkdir(output_content_dir_path_str)
 
     # Maybe use os.path.join('/my/root/directory', 'in', 'here')
 
@@ -232,8 +232,8 @@ def process_flattened_list(flat_list, output_dir_path_str):
             #print("OLD:", old_abs_file_path_str)
 
             # Make new absolute path
-            new_abs_dir_path_str = os.path.join(output_dir_path_str, rel_path_str)
-            new_abs_file_path_str = os.path.join(output_dir_path_str, rel_path_str, name_str)
+            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_path_str)
+            new_abs_file_path_str = os.path.join(output_content_dir_path_str, rel_path_str, name_str)
             #print("NEW DIR:", new_abs_dir_path_str)
             #print("NEW FILE:", new_abs_file_path_str)
 
@@ -245,7 +245,7 @@ def process_flattened_list(flat_list, output_dir_path_str):
 
         else: # "DIR"
             # Make new absolute path
-            new_abs_dir_path_str = os.path.join(output_dir_path_str, rel_path_str)
+            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_path_str)
             #print("NEW DIR:", new_abs_dir_path_str)
             # Make a new directory if you need to.
             make_dir_if_necessary(new_abs_dir_path_str)
@@ -270,30 +270,30 @@ try:
         sys.exit(1)
 
     # FOR REAL
-    content_dir_path_str = os.path.join(working_dir_str, sys.argv[1])
+    source_content_dir_path_str = os.path.join(working_dir_str, sys.argv[1])
     # FOR TESTING
-    #content_dir_path_str = "/home/bryan/Documents/Repositories/bryanj1234.github.io/projects"
+    #source_content_dir_path_str = "/home/bryan/Documents/Repositories/bryanj1234.github.io/projects"
 
-    # Output directory is the one in the Hogo site template.
-    output_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/content')
+    # Output directory is the one in the Hugo site template.
+    output_content_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/content')
 
-    print("Source content directory: ", content_dir_path_str)
-    print("Output directory: ", output_dir_path_str)
+    print("Source content directory: ", source_content_dir_path_str)
+    print("Output content directory: ", output_content_dir_path_str)
     print()
     print("Processing source directory...")
 
     # Recursively scan the direstory.
 
-    dir_contents = recursive_dir_scan(content_dir_path_str, ['DIR', 0, 'XXX_ROOT_XXX', content_dir_path_str, []])
+    dir_contents = recursive_dir_scan(source_content_dir_path_str, ['DIR', 0, 'XXX_ROOT_XXX', source_content_dir_path_str, []])
 
     # print("##############################################################")
     # print("Source content directory structure")
     # print("##############################################################")
     # print()
 
-    flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], content_dir_path_str)
+    flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], source_content_dir_path_str)
 
-    process_flattened_list(flat_list, output_dir_path_str)
+    process_flattened_list(flat_list, output_content_dir_path_str)
 
     print("Done creating new files.")
     print()
