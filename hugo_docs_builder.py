@@ -62,18 +62,18 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, root_
     name_str = current_dir[2]
     abs_path_str = current_dir[3]
     child_recs = current_dir[4]
-    rel_path_str = os.path.relpath(abs_path_str, root_path)
+    rel_dir_path_str = os.path.relpath(abs_path_str, root_path)
 
     print("X" * 2 * level, level, file_or_dir, name_str)
 
-    cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_path_str])
+    cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_dir_path_str])
 
     for child_rec in child_recs:
         file_or_dir = child_rec[0]
         level = child_rec[1]
         name_str = child_rec[2]
         abs_path_str = current_dir[3]
-        rel_path_str = os.path.relpath(abs_path_str, root_path)
+        rel_dir_path_str = os.path.relpath(abs_path_str, root_path)
 
         if file_or_dir == "FILE":
             _, file_extension = os.path.splitext(name_str)
@@ -81,7 +81,7 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, root_
 
             #print(" " * 2 * level, level, file_or_dir, name_str, file_extension)
 
-            cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_path_str])
+            cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_dir_path_str])
         else: # "DIR"
             recursively_print_and_flatten_dir_contents(child_rec, cur_flat_list, root_path)
 
@@ -105,12 +105,10 @@ def make_index_file_if_necessary(new_abs_dir_path_str):
 
 def make_dir_if_necessary(new_abs_dir_path_str):
 
-    dir_name = pathlib.Path(new_abs_dir_path_str).name
-
     # Make new directory, with parents, if necessary.
     pathlib.Path(new_abs_dir_path_str).mkdir(parents=True, exist_ok=True)
 
-def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str):
+def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path):
 
     # Skip files that result it frontmatter module errors, for example when a markdown file contains problematic backslashes.
     try:
@@ -141,58 +139,20 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
 
-        # elif file_extension == "HTML":   # MAGIC
-        #     bool_created_file = True
+        else: # MAGIC. Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
-        #     shutil.copyfile(old_abs_file_path_str, new_abs_file_path_str)
-        #     # Also make a new file "__MD_" + new_abs_file_path_str + ".md" which shows the HTML in an iframe.
-        #     new_file_md_str = "__MD_" + file_name + ".md"
-        #     new_file_md_abs_path_str = os.path.join(new_abs_dir_path_str, new_file_md_str)
+            wrapper_md_file_path_str = os.path.join(new_abs_dir_path_str, file_name + ".md")
 
-        #     # Get the page title.
-        #     title_str = file_name
+            with open(wrapper_md_file_path_str, 'w') as the_file:
+                the_file.write('---')
+                the_file.write('\nTitle: ' + file_name)
+                the_file.write('\nis_source_file: true')
+                the_file.write('\nsource_file_name: ' + source_file_rel_path)
+                the_file.write('\nsource_file_ext: ' + file_extension)
+                the_file.write('\n---')
+                the_file.write('\n\n')
 
-        #     with open(new_file_md_abs_path_str, 'w') as the_file:
-        #         the_file.write('---\nTitle: ' + title_str + '\n---\n\n')
-        #         # !!! NOTE !!! The "../" in the next line is because of what Hugo does when it processes files and directories.
-        #         write_str = '<iframe width="100%" name="iframe" src= "../' + file_name + '" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>'
-        #         the_file.write(write_str + '\n')
-        #         write_str = "<script> function resizeIframe(obj) {obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';}</script>"
-        #         the_file.write(write_str + '\n')
-        #         #print(new_file_md_abs_path_str)
 
-        # elif file_extension == "MP4":   # MAGIC, similar to the HTML handler.
-        #     bool_created_file = True
-
-        #     shutil.copyfile(old_abs_file_path_str, new_abs_file_path_str)
-        #     new_file_md_str = "__MD_" + file_name + ".md"
-        #     new_file_md_abs_path_str = os.path.join(new_abs_dir_path_str, new_file_md_str)
-
-        #     # Get the page title.
-        #     title_str = file_name
-
-        #     with open(new_file_md_abs_path_str, 'w') as the_file:
-        #         the_file.write('---\nTitle: ' + title_str + '\n---\n\n')
-        #         # !!! NOTE !!! The "../" in the next line is because of what Hugo does when it processes files and directories.
-        #         write_str = '<center><video width="70%" controls autoplay><source src="../' + file_name + '" type="video/mp4">Your browser does not support the video tag.</video></center>'
-        #         the_file.write(write_str + '\n')
-
-        # elif file_extension == "PY" or file_extension == "CSD" :   # MAGIC
-        #     bool_created_file = True
-
-        #     new_file_md_str = "__MD_" + file_name + ".md"
-        #     new_file_md_abs_path_str = os.path.join(new_abs_dir_path_str, new_file_md_str)
-        #     with open(old_abs_file_path_str, 'r') as f:
-        #         post = frontmatter.loads(f.read())
-        #         post['title'] = file_name
-        #         post.content = "```\n" + post.content + "\n```"
-        #         f.close()
-        #         with open(new_file_md_abs_path_str, 'w') as f:
-        #             f.write(frontmatter.dumps(post))
-
-        else: # COPY.
-            bool_created_file = True
-            shutil.copyfile(old_abs_file_path_str, new_abs_file_path_str)
 
         # END File handling depends on extension. ##########################################################
 
@@ -207,50 +167,60 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
         print("Skipping source file ", old_abs_file_path_str)
         print()
 
-def process_flattened_list(flat_list, output_content_dir_path_str):
+def process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str):
 
     # Remove and recreate the output directory.
 
-    #print(output_content_dir_path_str)
     shutil.rmtree(output_content_dir_path_str, ignore_errors=True)
     os.mkdir(output_content_dir_path_str)
+    shutil.rmtree(output_static_dir_path_str, ignore_errors=True)
+    os.mkdir(output_static_dir_path_str)
 
     # Maybe use os.path.join('/my/root/directory', 'in', 'here')
 
     for rec in flat_list:
-        #print(rec) # [file_or_dir, level, name_str, abs_path_str, rel_path_str]
+        #print(rec) # [file_or_dir, level, name_str, abs_path_str, rel_dir_path_str]
 
         file_or_dir = rec[0]
         level = rec[1]
         name_str = rec[2]
-        orig_abs_path_str = rec[3]
-        rel_path_str = rec[4]
+        orig_dir_abs_path_str = rec[3]
+        rel_dir_path_str = rec[4]
 
         if file_or_dir == "FILE":
-            # Get old absolute path
-            old_abs_file_path_str = os.path.join(orig_abs_path_str, name_str)
-            #print("OLD:", old_abs_file_path_str)
 
-            # Make new absolute path
-            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_path_str)
-            new_abs_file_path_str = os.path.join(output_content_dir_path_str, rel_path_str, name_str)
-            #print("NEW DIR:", new_abs_dir_path_str)
-            #print("NEW FILE:", new_abs_file_path_str)
+            # Get old absolute path
+            old_abs_file_path_str = os.path.join(orig_dir_abs_path_str, name_str)
+
+            # Make static source path
+            source_dir_path_str = os.path.join(output_static_dir_path_str, rel_dir_path_str)
+            source_file_path_str = os.path.join(source_dir_path_str, name_str)
+            source_file_rel_path = os.path.join(rel_dir_path_str, name_str)
+            print("AAAAAAAA:", source_file_rel_path)
+
+            # Make new content path
+            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_dir_path_str)
+            new_abs_file_path_str = os.path.join(new_abs_dir_path_str, name_str)
+
+            # OUTPUT STATIC SOURCE #################################################################
+
+            # Make a new directory if you need to.
+            make_dir_if_necessary(source_dir_path_str)
+
+            # Copy file
+            shutil.copyfile(old_abs_file_path_str, source_file_path_str)
+
+            # OUTPUT CONTENT #################################################################
 
             # Make a new directory if you need to.
             make_dir_if_necessary(new_abs_dir_path_str)
 
             # Make new file
-            make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str)
+            make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path)
 
         else: # "DIR"
-            # Make new absolute path
-            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_path_str)
-            #print("NEW DIR:", new_abs_dir_path_str)
-            # Make a new directory if you need to.
-            make_dir_if_necessary(new_abs_dir_path_str)
-
-
+            # Nothing to do here, since will make directories only as needed when creating files...
+            pass
 
 ####################################################################################################
 ####################################################################################################
@@ -276,9 +246,11 @@ try:
 
     # Output directory is the one in the Hugo site template.
     output_content_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/content')
+    output_static_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/static/source_files')
 
     print("Source content directory: ", source_content_dir_path_str)
     print("Output content directory: ", output_content_dir_path_str)
+    print("Output stitic source directory: ", output_static_dir_path_str)
     print()
     print("Processing source directory...")
 
@@ -293,7 +265,7 @@ try:
 
     flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], source_content_dir_path_str)
 
-    process_flattened_list(flat_list, output_content_dir_path_str)
+    process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str)
 
     print("Done creating new files.")
     print()

@@ -2,6 +2,8 @@
 
 # ARG_1 is the source content directory
 
+CURRENT_WD=$PWD;
+
 echo
 
 if [ $# -ne 2 ];
@@ -56,8 +58,6 @@ if [ $? -ne 0 ]; then
     echo "See output for details."
     exit 1
 fi
-
-CURRENT_WD=$PWD;
 
 echo
 echo "Current working directory: ${CURRENT_WD}".
