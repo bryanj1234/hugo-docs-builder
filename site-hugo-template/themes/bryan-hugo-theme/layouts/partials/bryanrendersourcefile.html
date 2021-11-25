@@ -40,6 +40,22 @@
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
         <pre><code class="python">{{$file_contents}}</code></pre>
 
+    {{else if eq .Params.source_file_ext "SH"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="bash">{{$file_contents}}</code></pre>
+
+    {{else if eq .Params.source_file_ext "CSD"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="">{{$file_contents}}</code></pre>
+
     {{else if eq .Params.source_file_ext "JPG"}}
 
         {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}

@@ -101,29 +101,26 @@
 <!-- templates -->
 
 {{ define "bryan-menu-show-section-files" }}
-    {{ $curContext := .curContext }}
+    {{with .curContext}}
+        {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
 
-    {{ $my_scratch := newScratch }}
-    {{$my_scratch.Set "bool_exists_file" false}}
-
-    {{ range (readDir (path.Join "content/" $curContext.File.Dir) ) }}
-        {{ if not .IsDir }}
-            {{ $extension := path.Ext (upper .Name) }}
-            {{ if not (eq $extension ".MD") }}
-                {{ if not ($my_scratch.Get "bool_exists_file") }}
-                    {{$my_scratch.Set "bool_exists_file" true}}
-                    <ul class="menu-files">
+        {{$bool_exists_file := false}}
+        {{range .Pages.ByTitle}}
+            {{if .Params.is_source_file}}
+                {{ if not $bool_exists_file }}
+                    {{$bool_exists_file = true}}
+                    <ul>
                 {{end}}
-                <li>
-                    <a href = "{{path.Join $curContext.RelPermalink .Name}}" class = "static_file_link">{{.Name}}</a>
-                </li>
-
+                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
             {{end}}
-        {{ end }}
-    {{ end }}
-    {{ if ($my_scratch.Get "bool_exists_file") }}
-        </ul>
+        {{end}}
+
+        {{ if $bool_exists_file }}
+            </ul>
+        {{end}}
+
     {{end}}
+
 {{end}}
 
 
@@ -170,16 +167,20 @@
 
         {{if eq .Site.Params.ordersectionsby "title"}}
           {{ range $pages.ByTitle }}
-            {{ if and .Params.hidden (not $.showhidden) }}
-            {{else}}
-                {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+            {{if not .Params.is_source_file}}
+              {{ if and .Params.hidden (not $.showhidden) }}
+              {{else}}
+                  {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+              {{end}}
             {{end}}
           {{ end }}
         {{else}}
           {{ range $pages.ByWeight }}
-            {{ if and .Params.hidden (not $.showhidden) }}
-            {{else}}
-                {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+            {{if not .Params.is_source_file}}
+              {{ if and .Params.hidden (not $.showhidden) }}
+              {{else}}
+                  {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+              {{end}}
             {{end}}
           {{ end }}
         {{end}}
