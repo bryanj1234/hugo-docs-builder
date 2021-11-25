@@ -35,7 +35,7 @@ CONTENT="${SCRIPT_DIR}/site-hugo-template/content"
 STATICSOURCE="${SCRIPT_DIR}/site-hugo-template/static/source_files"
 PUBLIC="${SCRIPT_DIR}/site-hugo-template/public"
 
-echo "Removing and remaking contentfolder from PREVIOUS Hugo run."
+echo "Removing and remaking content folder from PREVIOUS Hugo run."
 rm -fr $CONTENT
 mkdir -p $CONTENT
 
@@ -97,6 +97,21 @@ echo
 echo "Changing working directory back to ${CURRENT_WD}"
 cd $CURRENT_WD
 echo "Working directory: ${PWD}"
+
+echo "Cleaning up"
+
+echo "Removing and remaking content folder."
+rm -fr $CONTENT
+mkdir -p $CONTENT
+
+echo "Removing and remaking static source folder."
+rm -fr $STATICSOURCE
+mkdir -p $STATICSOURCE
+
+echo "Removing and remaking public folder."
+rm -fr $PUBLIC
+mkdir -p $PUBLIC
+
 
 echo
 echo "================================================================================="

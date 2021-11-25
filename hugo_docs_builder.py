@@ -108,7 +108,7 @@ def make_dir_if_necessary(new_abs_dir_path_str):
     # Make new directory, with parents, if necessary.
     pathlib.Path(new_abs_dir_path_str).mkdir(parents=True, exist_ok=True)
 
-def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path):
+def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path, output_static_dir_path_str, publish_static_source_dir):
 
     # Skip files that result it frontmatter module errors, for example when a markdown file contains problematic backslashes.
     try:
@@ -146,13 +146,17 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
             with open(wrapper_md_file_path_str, 'w') as the_file:
                 the_file.write('---')
                 the_file.write('\nTitle: ' + file_name)
+                the_file.write('\ntype: bryansourcefile')
                 the_file.write('\nis_source_file: true')
-                the_file.write('\nsource_file_name: ' + source_file_rel_path)
+                the_file.write('\nsource_file_name: ' + file_name)
+                the_file.write('\nsource_file_rel_name: ' + source_file_rel_path)
+                the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path))
+                the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir, source_file_rel_path))
                 the_file.write('\nsource_file_ext: ' + file_extension)
                 the_file.write('\n---')
                 the_file.write('\n\n')
 
-
+                # The rest of the behavior depends on what the user wants to do in Hugo templates.
 
         # END File handling depends on extension. ##########################################################
 
@@ -167,7 +171,7 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
         print("Skipping source file ", old_abs_file_path_str)
         print()
 
-def process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str):
+def process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir):
 
     # Remove and recreate the output directory.
 
@@ -196,7 +200,6 @@ def process_flattened_list(flat_list, output_content_dir_path_str, output_static
             source_dir_path_str = os.path.join(output_static_dir_path_str, rel_dir_path_str)
             source_file_path_str = os.path.join(source_dir_path_str, name_str)
             source_file_rel_path = os.path.join(rel_dir_path_str, name_str)
-            print("AAAAAAAA:", source_file_rel_path)
 
             # Make new content path
             new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_dir_path_str)
@@ -216,7 +219,7 @@ def process_flattened_list(flat_list, output_content_dir_path_str, output_static
             make_dir_if_necessary(new_abs_dir_path_str)
 
             # Make new file
-            make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path)
+            make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path, output_static_dir_path_str, publish_static_source_dir)
 
         else: # "DIR"
             # Nothing to do here, since will make directories only as needed when creating files...
@@ -246,11 +249,12 @@ try:
 
     # Output directory is the one in the Hugo site template.
     output_content_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/content')
-    output_static_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/static/source_files')
+    output_static_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template', 'static/source_files')
+    publish_static_source_dir = "/source_files"
 
     print("Source content directory: ", source_content_dir_path_str)
     print("Output content directory: ", output_content_dir_path_str)
-    print("Output stitic source directory: ", output_static_dir_path_str)
+    print("Output static source directory: ", output_static_dir_path_str)
     print()
     print("Processing source directory...")
 
@@ -265,7 +269,7 @@ try:
 
     flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], source_content_dir_path_str)
 
-    process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str)
+    process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir)
 
     print("Done creating new files.")
     print()

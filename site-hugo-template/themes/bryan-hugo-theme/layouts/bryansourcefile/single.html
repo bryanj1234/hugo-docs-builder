@@ -1,0 +1,12 @@
+<!-- {{.Params.is_source_file}} <br/>
+{{.Params.source_file_name}} <br/>
+{{.Params.source_file_rel_name}} <br/>
+{{.Params.source_file_full_name}} <br/>
+{{.Params.source_file_ext}} <br/>
+ -->
+
+{{if .Params.is_source_file}}
+
+    {{ partial "bryanrendersourcefile.html" . }}
+
+{{end}}

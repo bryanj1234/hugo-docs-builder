@@ -1,65 +1,87 @@
 
-
-
 {{ define "bryan-show-section-files" }}
     {{ $curContext := .curContext }}
 
-    {{ $my_scratch := newScratch }}
-    {{$my_scratch.Set "bool_exists_file" false}}
+    {{ $bool_exists_file := false }}
 
-    {{ range (readDir (path.Join "content/" $curContext.File.Dir) ) }}
-        {{ if not .IsDir }}
-            {{ $extension := path.Ext (upper .Name) }}
-            {{ if not (eq $extension ".MD") }}
-                {{ if not ($my_scratch.Get "bool_exists_file") }}
-                    {{$my_scratch.Set "bool_exists_file" true}}
+    {{with .curContext}}
+    {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
+
+        {{range $curContext.Pages.ByTitle}}
+            {{if .Params.is_source_file}}
+                {{ if not $bool_exists_file }}
+                    {{$bool_exists_file = true}}
                     <h2>Files</h2>
                     <ul>
                 {{end}}
-                <li>
-                    <a href = "{{path.Join $curContext.RelPermalink .Name}}" class = "static_file_link">{{.Name}}</a>
-                </li>
+                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
             {{end}}
-        {{ end }}
-    {{ end }}
+        {{end}}
 
-    {{ if ($my_scratch.Get "bool_exists_file") }}
-        </ul>
+        {{ if $bool_exists_file }}
+            </ul>
+        {{end}}
+
     {{end}}
 {{end}}
+
+{{ define "bryan-section-file" }}
+{{ $showvisitedlinks := .showvisitedlinks }}
+{{ $currentNode := .currentnode }}
+{{ $currentFileUniqueID := "" }}
+{{ $curContext := "curContext" }}
+{{ with $currentNode.File }}{{ $currentFileUniqueID = .UniqueID }}{{ end }}
+    {{with .curContext}}
+
+        <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item">
+            <a href="{{ .RelPermalink}}" class="static_file_link">
+            {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
+            {{ if $showvisitedlinks}}<i class="fas fa-check read-icon"></i>{{end}}
+            </a>
+        </li>
+
+    {{ end }}
+{{ end }}
+
+
+
+
 
 
 
 {{ define "bryan-show-section-items" }}
     {{ $curContext := .curContext }}
 
-    {{ $my_scratch := newScratch }}
-    {{$my_scratch.Set "bool_exists_file" false}}
+    {{ $bool_exists_file := false }}
 
     {{with .curContext}}
     {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
 
         {{if eq .Site.Params.ordersectionsby "title"}}
             {{range $curContext.Pages.ByTitle}}
-                {{ if not ($my_scratch.Get "bool_exists_file") }}
-                    {{$my_scratch.Set "bool_exists_file" true}}
-                    <h2>Folders</h2>
-                    <ul>
+                {{if not .Params.is_source_file}}
+                    {{ if not $bool_exists_file }}
+                        {{$bool_exists_file = true}}
+                        <h2>Folders</h2>
+                        <ul>
+                    {{end}}
+                    {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
                 {{end}}
-                {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
             {{end}}
         {{else}}
             {{range $curContext.Pages.ByWeight}}
-                {{ if not ($my_scratch.Get "bool_exists_file") }}
-                    {{$my_scratch.Set "bool_exists_file" true}}
-                    <h2>Folders</h2>
-                    <ul>
+                {{if not .Params.is_source_file}}
+                    {{ if not $bool_exists_file }}
+                        {{$bool_exists_file = true}}
+                        <h2>Folders</h2>
+                        <ul>
+                    {{end}}
+                    {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
                 {{end}}
-                {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
             {{end}}
         {{end}}
 
-        {{ if ($my_scratch.Get "bool_exists_file") }}
+        {{ if $bool_exists_file }}
             </ul>
         {{end}}
 

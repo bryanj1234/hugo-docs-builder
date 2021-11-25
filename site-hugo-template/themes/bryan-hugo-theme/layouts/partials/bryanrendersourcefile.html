@@ -1,0 +1,61 @@
+{{ partial "header.html" . }}
+
+{{ template "bryan-render-source-file" dict "context" .}}
+
+{{ partial "footer.html" . }}
+
+
+
+<!------------------------------------------------------------------>
+
+
+
+
+
+{{ define "bryan-render-source-file" }}
+    {{with .context}}
+
+    <!--
+    * {{.Params.is_source_file}}
+    * {{.Params.source_file_name}}
+    * {{.Params.source_file_rel_name}}
+    * {{.Params.source_file_hugo_full_name}}
+    * {{.Params.source_file_full_name}}
+    * {{.Params.source_file_ext}}
+    -->
+
+    {{if eq .Params.source_file_ext "HTML"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="html">{{$file_contents}}</code></pre>
+
+    {{else if eq .Params.source_file_ext "PY"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="python">{{$file_contents}}</code></pre>
+
+    {{else if eq .Params.source_file_ext "JPG"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        <img src = "{{.Params.source_file_full_name}}">
+
+    {{else}}
+
+        <!-- Redirect -->
+        <meta http-equiv="Refresh" content="0; url='{{.Params.source_file_full_name}}'" />
+
+    {{end}}
+
+
+
+
+    {{ end }}
+{{ end }}
