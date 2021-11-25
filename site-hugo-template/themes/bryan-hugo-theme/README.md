@@ -1,0 +1,1 @@
+Based on [Hugo Learn Theme](https://github.com/matcornic/hugo-theme-learn ) v2.5.0 (01/06/2020).
