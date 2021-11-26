@@ -35,18 +35,6 @@ CONTENT="${SCRIPT_DIR}/site-hugo-template/content"
 STATICSOURCE="${SCRIPT_DIR}/site-hugo-template/static/source_files"
 PUBLIC="${SCRIPT_DIR}/site-hugo-template/public"
 
-echo "Removing and remaking content folder from PREVIOUS Hugo run."
-rm -fr $CONTENT
-mkdir -p $CONTENT
-
-echo "Removing and remaking static source folder from PREVIOUS Hugo run."
-rm -fr $STATICSOURCE
-mkdir -p $STATICSOURCE
-
-echo "Removing and remaking public folder from PREVIOUS Hugo run."
-rm -fr $PUBLIC
-mkdir -p $PUBLIC
-
 echo "Running ${SCRIPT_DIR}/hugo_docs_builder.py ${SOURCE_DIR}..."
 
 python "${SCRIPT_DIR}/hugo_docs_builder.py" $SOURCE_DIR
@@ -100,17 +88,23 @@ echo "Working directory: ${PWD}"
 
 echo "Cleaning up"
 
-echo "Removing and remaking content folder."
+echo "Removing and remaking content folder from PREVIOUS Hugo run."
 rm -fr $CONTENT
 mkdir -p $CONTENT
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${CONTENT}/_SITE_BUILDER_STOP"
 
-echo "Removing and remaking static source folder."
+echo "Removing and remaking static source folder from PREVIOUS Hugo run."
 rm -fr $STATICSOURCE
 mkdir -p $STATICSOURCE
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${STATICSOURCE}/_SITE_BUILDER_STOP"
 
-echo "Removing and remaking public folder."
+echo "Removing and remaking public folder from PREVIOUS Hugo run."
 rm -fr $PUBLIC
 mkdir -p $PUBLIC
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${PUBLIC}/_SITE_BUILDER_STOP"
 
 
 echo

@@ -1,6 +1,11 @@
 import sys
 import os
 import pathlib
+import traceback
+import shutil
+from bs4 import BeautifulSoup
+import frontmatter
+import io
 
 print()
 print("##############################################################")
@@ -12,11 +17,6 @@ print("Running with Python version", sys.version)
 print("Running with Python executable", sys.executable)
 print()
 
-import shutil
-from bs4 import BeautifulSoup
-import frontmatter
-import io
-
 ####################################################################################################
 ####################################################################################################
 ####################################################################################################
@@ -27,10 +27,38 @@ import io
 ####################################################################################################
 ####################################################################################################
 
+
+def recursive_find_site_builder_start(cur_dir_path_str, entry_points_list):
+
+    try:
+        with os.scandir(cur_dir_path_str) as it:
+            for entry in it:
+                if entry.is_dir():
+                    recursive_find_site_builder_start(entry.path, entry_points_list)
+                elif entry.is_file():
+                    name_str = entry.name
+                    abs_path_str = os.path.abspath(entry.path)
+
+                    # Look for _SITE_BUILDER_START.md
+                    if name_str == "_SITE_BUILDER_START.md":
+                        dir_path = os.path.dirname(os.path.realpath(abs_path_str))
+                        entry_points_list.append([dir_path, name_str])
+
+    except (FileNotFoundError):
+        print("Directory not found.")
+        print("Specify source content directory, relative to the above working directory.")
+        sys.exit(1)
+
 def recursive_dir_scan(cur_dir_path_str, cur_contents):
     # Increment level
     level = cur_contents[1]
     level += 1
+
+    # Check to see if we should stop recursion prematurely.
+    # This is determined by the presence of a _SITE_BUILDER_STOP file (no extension, case sensitive).
+    stop_file_str = os.path.join(cur_dir_path_str, "_SITE_BUILDER_STOP")
+    bool_stop_file_exists = os.path.exists(stop_file_str)
+
     try:
         with os.scandir(cur_dir_path_str) as it:
             for entry in it:
@@ -42,11 +70,17 @@ def recursive_dir_scan(cur_dir_path_str, cur_contents):
                     # print(" " * 2* level, "(recursing)")
                     new_rec = ["DIR", level, name_str, abs_path_str, []]
                     cur_contents[4].append(new_rec)
-                    child_records = recursive_dir_scan(entry.path, new_rec)
+
+                    if bool_stop_file_exists:
+                        print("Found stop file, not rucursing.")
+                        exit()
+                    else:
+                        child_records = recursive_dir_scan(entry.path, new_rec)
+
                 elif entry.is_file():
                     name_str = entry.name
                     abs_path_str = os.path.abspath(entry.path)
-                    # print(" " * 2 * level, level, "file:", name_str, abs_path_str)
+                    #print(" " * 2 * level, level, "file:", name_str, abs_path_str)
                     cur_contents[4].append(["FILE", level, name_str, abs_path_str])
 
     except (FileNotFoundError):
@@ -56,24 +90,25 @@ def recursive_dir_scan(cur_dir_path_str, cur_contents):
 
     return cur_contents
 
-def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, root_path):
+def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, source_content_dir_path_str, entry_point_dir):
     file_or_dir = current_dir[0]    # Always "DIR" for this record...
     level = current_dir[1]
     name_str = current_dir[2]
     abs_path_str = current_dir[3]
     child_recs = current_dir[4]
-    rel_dir_path_str = os.path.relpath(abs_path_str, root_path)
 
     print("X" * 2 * level, level, file_or_dir, name_str)
 
-    cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_dir_path_str])
+    source_rel_dir_path_str = os.path.relpath(abs_path_str, source_content_dir_path_str)
+    entry_rel_dir_path_str = os.path.relpath(abs_path_str, entry_point_dir)
+
+    cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, source_rel_dir_path_str, entry_rel_dir_path_str])
 
     for child_rec in child_recs:
         file_or_dir = child_rec[0]
         level = child_rec[1]
         name_str = child_rec[2]
         abs_path_str = current_dir[3]
-        rel_dir_path_str = os.path.relpath(abs_path_str, root_path)
 
         if file_or_dir == "FILE":
             _, file_extension = os.path.splitext(name_str)
@@ -81,67 +116,76 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, root_
 
             #print(" " * 2 * level, level, file_or_dir, name_str, file_extension)
 
-            cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, rel_dir_path_str])
+            source_rel_dir_path_str = os.path.relpath(abs_path_str, source_content_dir_path_str)
+            entry_rel_dir_path_str = os.path.relpath(abs_path_str, entry_point_dir)
+
+            cur_flat_list.append([file_or_dir, level, name_str, abs_path_str, source_rel_dir_path_str, entry_rel_dir_path_str])
         else: # "DIR"
-            recursively_print_and_flatten_dir_contents(child_rec, cur_flat_list, root_path)
+            recursively_print_and_flatten_dir_contents(child_rec, cur_flat_list, source_content_dir_path_str, entry_point_dir)
 
     return cur_flat_list
 
-def index_file_exists(new_abs_dir_path_str):
-    index_html_str = os.path.join(new_abs_dir_path_str, "index.html")
-    index_htm_str = os.path.join(new_abs_dir_path_str, "index.htm")
-    index_md_str = os.path.join(new_abs_dir_path_str, "_index.md")
-    index_md_str_2 = os.path.join(new_abs_dir_path_str, "index.md")
+def index_file_exists(content_dir_abs_path_str):
+    index_html_str = os.path.join(content_dir_abs_path_str, "index.html")
+    index_htm_str = os.path.join(content_dir_abs_path_str, "index.htm")
+    index_md_str = os.path.join(content_dir_abs_path_str, "_index.md")
+    index_md_str_2 = os.path.join(content_dir_abs_path_str, "index.md")
     return pathlib.Path(index_html_str).is_file() or pathlib.Path(index_htm_str).is_file() \
             or pathlib.Path(index_md_str).is_file() or pathlib.Path(index_md_str_2).is_file()
 
-def make_index_file_if_necessary(new_abs_dir_path_str):
+def make_index_file_if_necessary(content_dir_abs_path_str):
     # Add _index.md file for Hugo, BUT ONLY IF NOT ALREADY PRESENT. DON'T WANT TO CLOBBER ONE GENERATED FROM README.
-    if not index_file_exists(new_abs_dir_path_str):
-        index_file_str = os.path.join(new_abs_dir_path_str, "_index.md")
+    if not index_file_exists(content_dir_abs_path_str):
+        index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
         with open(index_file_str, 'w') as the_file:
-            dir_name = pathlib.Path(new_abs_dir_path_str).name
+            dir_name = pathlib.Path(content_dir_abs_path_str).name
             the_file.write('---\nTitle: ' + dir_name + '\n---\n')
 
-def make_dir_if_necessary(new_abs_dir_path_str):
+def make_dir_if_necessary(content_dir_abs_path_str):
 
     # Make new directory, with parents, if necessary.
-    pathlib.Path(new_abs_dir_path_str).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(content_dir_abs_path_str).mkdir(parents=True, exist_ok=True)
 
-def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path, output_static_dir_path_str, publish_static_source_dir):
+def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str):
 
     # Skip files that result it frontmatter module errors, for example when a markdown file contains problematic backslashes.
     try:
 
-        bool_created_file = False
+        file_name = pathlib.Path(source_file_abs_path_str).name
+        dir_name = pathlib.Path(content_dir_abs_path_str).name
 
-        file_name = pathlib.Path(old_abs_file_path_str).name
-        dir_name = pathlib.Path(new_abs_dir_path_str).name
-
-        _, file_extension = os.path.splitext(old_abs_file_path_str)
+        _, file_extension = os.path.splitext(source_file_abs_path_str)
         file_extension = file_extension.upper().replace(".", "")
 
-        # START File handling depends on extension. ##########################################################
-        if file_name.upper() == "README.MD":       # MAGIC. README files are converted into _index.md files.
-            bool_created_file = True
+        # START File handling depends on file name. ##########################################################
 
-            # NOTE: README files are converted into _index.md files.
-            # Write the new _index.mf file.
+        if file_name == "_SITE_BUILDER_START.md" or file_name == "_SITE_BUILDER_INDEX.MD":
+
+            # print("\n***********************************************************")
+            # print(content_dir_abs_path_str)
+            # print(source_file_abs_path_str)
+            # print(source_file_rel_path_str)
+            # print(output_static_dir_path_str)
+            # print(publish_static_source_dir_str)
+            # print("\n***********************************************************")
+
+            # NOTE: _SITE_BUILDER_START.md files are converted into _index.md files.
+            # Write the new _index.md file.
             # Deal with frontmatter that Hugo needs to work right.
             #
             # Don't clobber an index.html file though.
-            with open(old_abs_file_path_str, 'r') as f:
+            with open(source_file_abs_path_str, 'r') as f:
                 post = frontmatter.loads(f.read())
                 f.close()
                 if not 'title' in post:
                     post['title'] = file_name
-                index_file_str = os.path.join(new_abs_dir_path_str, "_index.md")
+                index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
 
-        else: # MAGIC. Treat as a code source file in /static/source_files and wrap it up in a *.md file...
+        else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
-            wrapper_md_file_path_str = os.path.join(new_abs_dir_path_str, file_name + ".md")
+            wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, file_name + ".md")
 
             with open(wrapper_md_file_path_str, 'w') as the_file:
                 the_file.write('---')
@@ -149,81 +193,94 @@ def make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path
                 the_file.write('\ntype: bryansourcefile')
                 the_file.write('\nis_source_file: true')
                 the_file.write('\nsource_file_name: ' + file_name)
-                the_file.write('\nsource_file_rel_name: ' + source_file_rel_path)
-                the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path))
-                the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir, source_file_rel_path))
+                the_file.write('\nsource_file_rel_name: ' + source_file_rel_path_str)
+                the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path_str))
+                the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_ext: ' + file_extension)
                 the_file.write('\n---')
                 the_file.write('\n\n')
 
                 # The rest of the behavior depends on what the user wants to do in Hugo templates.
 
-        # END File handling depends on extension. ##########################################################
+        # END File handling depends on file name. ##########################################################
 
         # Add an index file if necessary
-        if bool_created_file:
-            make_index_file_if_necessary(new_abs_dir_path_str)
+        make_index_file_if_necessary(content_dir_abs_path_str)
 
     except Exception as error:
         print()
         print("*** ERROR")
         print("    ", repr(error))
-        print("Skipping source file ", old_abs_file_path_str)
+        print("Skipping source file ", source_file_abs_path_str)
         print()
 
-def process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir):
+def process_flattened_list(flat_lists, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir_str):
 
-    # Remove and recreate the output directory.
+    for entry_point_rec in flat_lists:
 
-    shutil.rmtree(output_content_dir_path_str, ignore_errors=True)
-    os.mkdir(output_content_dir_path_str)
-    shutil.rmtree(output_static_dir_path_str, ignore_errors=True)
-    os.mkdir(output_static_dir_path_str)
+        entry_point_dir_str = entry_point_rec["entry_point_dir_str"]
+        entry_point_file_str = entry_point_rec["entry_point_file_str"]
 
-    # Maybe use os.path.join('/my/root/directory', 'in', 'here')
+        # Get entry point into from entry point start file...
+        entry_point_title_str = "__NO_TITLE__"
+        with open(os.path.join(entry_point_dir_str, entry_point_file_str), 'r') as f:
+            post = frontmatter.loads(f.read())
+            f.close()
+            if 'title' in post:
+                entry_point_title_str = post['title']
+            else:
+                raise Exception("Entry point start file needs a title.")
 
-    for rec in flat_list:
-        #print(rec) # [file_or_dir, level, name_str, abs_path_str, rel_dir_path_str]
+        flat_list = entry_point_rec["flat_list"]
+        for rec in flat_list:
 
-        file_or_dir = rec[0]
-        level = rec[1]
-        name_str = rec[2]
-        orig_dir_abs_path_str = rec[3]
-        rel_dir_path_str = rec[4]
+            # print("entry_point_dir_str:", entry_point_dir_str)
+            # print("        ", rec) # [file_or_dir, level, name_str, abs_path_str, source_rel_dir_path_str, entry_rel_dir_path_str]
+            #         # ['FILE', 2, 'vcs.xml', '/home/bryan/Documents/DEV/version-controlled/bryanj1234.github.io/projects/DS/Google-MLCC/.idea',
+            #         #               'DS/Google-MLCC/.idea', '.idea']
+            #         # ['DIR', 1, '.idea', '/home/bryan/Documents/DEV/version-controlled/bryanj1234.github.io/projects/DS/Google-MLCC/.idea',
+            #         #               'DS/Google-MLCC/.idea', '.idea']
 
-        if file_or_dir == "FILE":
+            file_or_dir = rec[0]
+            level = rec[1]
+            name_str = rec[2]
+            dir_abs_path_str = rec[3]
+            dir_rel_source_dir_str = rec[4]
+            dir_rel_entry_point_dir_str = rec[5]
 
-            # Get old absolute path
-            old_abs_file_path_str = os.path.join(orig_dir_abs_path_str, name_str)
+            if file_or_dir == "FILE":
 
-            # Make static source path
-            source_dir_path_str = os.path.join(output_static_dir_path_str, rel_dir_path_str)
-            source_file_path_str = os.path.join(source_dir_path_str, name_str)
-            source_file_rel_path = os.path.join(rel_dir_path_str, name_str)
+                # Get old absolute path
+                source_file_abs_path_str = os.path.join(dir_abs_path_str, name_str)
 
-            # Make new content path
-            new_abs_dir_path_str = os.path.join(output_content_dir_path_str, rel_dir_path_str)
-            new_abs_file_path_str = os.path.join(new_abs_dir_path_str, name_str)
+                # Make static source path
+                source_dir_path_str = os.path.join(output_static_dir_path_str, dir_rel_source_dir_str)
+                source_file_path_str = os.path.join(source_dir_path_str, name_str)
+                source_file_rel_path_str = os.path.join(dir_rel_source_dir_str, name_str)
 
-            # OUTPUT STATIC SOURCE #################################################################
+                # Make new content path
+                content_dir_abs_path_str = os.path.join(output_content_dir_path_str, entry_point_title_str, dir_rel_entry_point_dir_str)
 
-            # Make a new directory if you need to.
-            make_dir_if_necessary(source_dir_path_str)
+                # OUTPUT STATIC SOURCE #################################################################
 
-            # Copy file
-            shutil.copyfile(old_abs_file_path_str, source_file_path_str)
+                # Make a new directory if you need to.
+                make_dir_if_necessary(source_dir_path_str)
 
-            # OUTPUT CONTENT #################################################################
+                # Copy file
+                shutil.copyfile(source_file_abs_path_str, source_file_path_str)
 
-            # Make a new directory if you need to.
-            make_dir_if_necessary(new_abs_dir_path_str)
+                # OUTPUT CONTENT #################################################################
 
-            # Make new file
-            make_new_file(new_abs_dir_path_str, new_abs_file_path_str, old_abs_file_path_str, source_file_rel_path, output_static_dir_path_str, publish_static_source_dir)
+                # Make a new directory if you need to.
+                make_dir_if_necessary(content_dir_abs_path_str)
 
-        else: # "DIR"
-            # Nothing to do here, since will make directories only as needed when creating files...
-            pass
+                # Make new file
+                make_new_file(content_dir_abs_path_str, source_file_abs_path_str, \
+                                source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str)
+
+            else: # "DIR"
+                # Nothing to do here, since will make directories only as needed when creating files...
+                pass
 
 ####################################################################################################
 ####################################################################################################
@@ -249,27 +306,54 @@ try:
 
     # Output directory is the one in the Hugo site template.
     output_content_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/content')
+    output_public_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template/public')
     output_static_dir_path_str = os.path.join(str(pathlib.Path(__file__).parent), 'site-hugo-template', 'static/source_files')
-    publish_static_source_dir = "/source_files"
+    publish_static_source_dir_str = "/source_files"
 
     print("Source content directory: ", source_content_dir_path_str)
     print("Output content directory: ", output_content_dir_path_str)
+    print("Output public directory: ", output_public_dir_path_str)
     print("Output static source directory: ", output_static_dir_path_str)
     print()
+
+    # Remove and recreate the output directories.
+    # Also make _SITE_BUILDER_STOP to avoid recursion.
+
+    # content
+    shutil.rmtree(output_content_dir_path_str, ignore_errors=True)
+    os.mkdir(output_content_dir_path_str)
+    pathlib.Path(os.path.join(output_content_dir_path_str, '_SITE_BUILDER_STOP')).touch()
+
+    # public
+    shutil.rmtree(output_content_dir_path_str, ignore_errors=True)
+    os.mkdir(output_content_dir_path_str)
+    pathlib.Path(os.path.join(output_content_dir_path_str, '_SITE_BUILDER_STOP')).touch()
+
+    # static source
+    shutil.rmtree(output_static_dir_path_str, ignore_errors=True)
+    os.mkdir(output_static_dir_path_str)
+    pathlib.Path(os.path.join(output_static_dir_path_str, '_SITE_BUILDER_STOP')).touch()
+
     print("Processing source directory...")
 
-    # Recursively scan the direstory.
+    # Find entry points for site builder.
+    entry_points_list = []
+    recursive_find_site_builder_start(source_content_dir_path_str, entry_points_list)
 
-    dir_contents = recursive_dir_scan(source_content_dir_path_str, ['DIR', 0, 'XXX_ROOT_XXX', source_content_dir_path_str, []])
+    flat_lists = []
+    for rec in entry_points_list:
 
-    # print("##############################################################")
-    # print("Source content directory structure")
-    # print("##############################################################")
-    # print()
+        entry_point_dir = rec[0]
+        entry_point_file = rec[1]
 
-    flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], source_content_dir_path_str)
+        # Recursively scan the directory.
+        dir_contents = recursive_dir_scan(entry_point_dir, ['DIR', 0, entry_point_dir, entry_point_dir, []])
+        entry_point_flat_list = recursively_print_and_flatten_dir_contents(dir_contents, [], source_content_dir_path_str, entry_point_dir)
+        entry_point_rec = {"entry_point_dir_str": entry_point_dir, "entry_point_file_str": entry_point_file, "flat_list": entry_point_flat_list}
 
-    process_flattened_list(flat_list, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir)
+        flat_lists.append(entry_point_rec)
+
+    process_flattened_list(flat_lists, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir_str)
 
     print("Done creating new files.")
     print()
@@ -283,4 +367,5 @@ except Exception as error:
     print()
     print("*** ERROR")
     print("    ", repr(error))
+    traceback.print_exc()
     sys.exit(1)

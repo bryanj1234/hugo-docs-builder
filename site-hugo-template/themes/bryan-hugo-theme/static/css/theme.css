@@ -256,7 +256,7 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
 }
 #sidebar ul.topics ul {
     display: none;
-    padding-bottom: 1rem;
+    padding-bottom: 0rem;
 }
 #sidebar ul.topics ul ul {
     padding-bottom: 0;
