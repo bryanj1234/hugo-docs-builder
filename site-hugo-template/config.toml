@@ -12,7 +12,7 @@ theme = "bryan-hugo-theme"
   # Description of the site, will be used in meta information
   description = ""
 
-  # Nasme of home page
+  # Name of home page
   landingPageName = "Home"
 
   # Provide a list of custom css files to load relative from the `static/` folder in the site root.

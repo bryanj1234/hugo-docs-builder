@@ -1,12 +1,15 @@
 {{ partial "header.html" . }}
 
+{{ partial "bryan-get-and-show-page-items.html" .}}
+
+
+{{ template "bryan-show-section-files" dict "curContext" . }}
+{{ template "bryan-show-section-items" dict "curContext" . }}
+
+
 {{ .Content }}
 
-<footer class="footline">
-  {{with .Params.LastModifierDisplayName}}
-      <i class='fas fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a> {{with $.Date}} <i class='fas fa-calendar'></i> {{ .Format "02/01/2006" }}{{end}}
-      </div>
-  {{end}}
-</footer>
 
 {{ partial "footer.html" . }}
+
+
