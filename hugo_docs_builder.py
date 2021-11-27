@@ -49,6 +49,21 @@ def recursive_find_site_builder_start(cur_dir_path_str, entry_points_list):
         print("Specify source content directory, relative to the above working directory.")
         sys.exit(1)
 
+def DOCBUILDER_index_file_exists(content_dir_abs_path_str):
+    index_1_str = os.path.join(content_dir_abs_path_str, "_index.md")
+
+    bool_index_exists = pathlib.Path(index_1_str).is_file()
+
+    return bool_index_exists
+
+def make_DOCBUILDER_index_file_if_necessary(content_dir_abs_path_str):
+    # Add _index.md file for Hugo, BUT ONLY IF NOT ALREADY PRESENT. DON'T WANT TO CLOBBER ONE GENERATED FROM README.
+    if not DOCBUILDER_index_file_exists(content_dir_abs_path_str):
+        index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
+        with open(index_file_str, 'w') as the_file:
+            dir_name = pathlib.Path(content_dir_abs_path_str).name
+            the_file.write('---\nTitle: ' + dir_name + '\n---\n')
+
 def recursive_dir_scan(cur_dir_path_str, cur_contents):
     # Increment level
     level = cur_contents[1]
@@ -72,8 +87,8 @@ def recursive_dir_scan(cur_dir_path_str, cur_contents):
                     cur_contents[4].append(new_rec)
 
                     if bool_stop_file_exists:
-                        print("Found stop file, not rucursing.")
-                        exit()
+                        print("Found stop file", stop_file_str)
+                        print("Not recursing.")
                     else:
                         child_records = recursive_dir_scan(entry.path, new_rec)
 
@@ -97,7 +112,7 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, sourc
     abs_path_str = current_dir[3]
     child_recs = current_dir[4]
 
-    print("X" * 2 * level, level, file_or_dir, name_str)
+    #print("X" * 2 * level, level, file_or_dir, name_str)
 
     source_rel_dir_path_str = os.path.relpath(abs_path_str, source_content_dir_path_str)
     entry_rel_dir_path_str = os.path.relpath(abs_path_str, entry_point_dir)
@@ -125,22 +140,6 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, sourc
 
     return cur_flat_list
 
-def index_file_exists(content_dir_abs_path_str):
-    index_html_str = os.path.join(content_dir_abs_path_str, "index.html")
-    index_htm_str = os.path.join(content_dir_abs_path_str, "index.htm")
-    index_md_str = os.path.join(content_dir_abs_path_str, "_index.md")
-    index_md_str_2 = os.path.join(content_dir_abs_path_str, "index.md")
-    return pathlib.Path(index_html_str).is_file() or pathlib.Path(index_htm_str).is_file() \
-            or pathlib.Path(index_md_str).is_file() or pathlib.Path(index_md_str_2).is_file()
-
-def make_index_file_if_necessary(content_dir_abs_path_str):
-    # Add _index.md file for Hugo, BUT ONLY IF NOT ALREADY PRESENT. DON'T WANT TO CLOBBER ONE GENERATED FROM README.
-    if not index_file_exists(content_dir_abs_path_str):
-        index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
-        with open(index_file_str, 'w') as the_file:
-            dir_name = pathlib.Path(content_dir_abs_path_str).name
-            the_file.write('---\nTitle: ' + dir_name + '\n---\n')
-
 def make_dir_if_necessary(content_dir_abs_path_str):
 
     # Make new directory, with parents, if necessary.
@@ -152,14 +151,16 @@ def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_fil
     try:
 
         file_name = pathlib.Path(source_file_abs_path_str).name
-        dir_name = pathlib.Path(content_dir_abs_path_str).name
 
         _, file_extension = os.path.splitext(source_file_abs_path_str)
         file_extension = file_extension.upper().replace(".", "")
 
+        # Add an index file if necessary
+        make_DOCBUILDER_index_file_if_necessary(content_dir_abs_path_str)
+
         # START File handling depends on file name. ##########################################################
 
-        if file_name == "_SITE_BUILDER_START.md" or file_name == "_SITE_BUILDER_INDEX.MD":
+        if file_name == "_SITE_BUILDER_START.md" or file_name == "_SITE_BUILDER_INDEX.md":
 
             # print("\n***********************************************************")
             # print(content_dir_abs_path_str)
@@ -172,20 +173,25 @@ def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_fil
             # NOTE: _SITE_BUILDER_START.md files are converted into _index.md files.
             # Write the new _index.md file.
             # Deal with frontmatter that Hugo needs to work right.
-            #
-            # Don't clobber an index.html file though.
             with open(source_file_abs_path_str, 'r') as f:
                 post = frontmatter.loads(f.read())
                 f.close()
                 if not 'title' in post:
-                    post['title'] = file_name
+                    exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
+                    raise Exception(exception_str)
                 index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
 
+        elif file_name == '_TEMP_DOCBUILDER_INDEX':
+            pass
+
+        elif file_name == '_SITE_BUILDER_STOP':
+            pass
+
         else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
-            wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, file_name + ".md")
+            wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, '__WRAP__' + file_name + ".md")
 
             with open(wrapper_md_file_path_str, 'w') as the_file:
                 the_file.write('---')
@@ -204,15 +210,13 @@ def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_fil
 
         # END File handling depends on file name. ##########################################################
 
-        # Add an index file if necessary
-        make_index_file_if_necessary(content_dir_abs_path_str)
-
     except Exception as error:
         print()
         print("*** ERROR")
         print("    ", repr(error))
         print("Skipping source file ", source_file_abs_path_str)
-        print()
+        traceback.print_exc()
+        sys.exit(1)
 
 def process_flattened_list(flat_lists, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir_str):
 
@@ -222,14 +226,17 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
         entry_point_file_str = entry_point_rec["entry_point_file_str"]
 
         # Get entry point into from entry point start file...
+        # FIXME: Use a dictionary for lookup. This is way too much file I/O.
         entry_point_title_str = "__NO_TITLE__"
-        with open(os.path.join(entry_point_dir_str, entry_point_file_str), 'r') as f:
+        source_file_abs_path_str = os.path.join(entry_point_dir_str, entry_point_file_str)
+        with open(source_file_abs_path_str, 'r') as f:
             post = frontmatter.loads(f.read())
             f.close()
             if 'title' in post:
                 entry_point_title_str = post['title']
             else:
-                raise Exception("Entry point start file needs a title.")
+                exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
+                raise Exception(exception_str)
 
         flat_list = entry_point_rec["flat_list"]
         for rec in flat_list:

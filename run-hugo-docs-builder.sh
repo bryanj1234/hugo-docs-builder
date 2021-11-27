@@ -35,6 +35,27 @@ CONTENT="${SCRIPT_DIR}/site-hugo-template/content"
 STATICSOURCE="${SCRIPT_DIR}/site-hugo-template/static/source_files"
 PUBLIC="${SCRIPT_DIR}/site-hugo-template/public"
 
+echo "Removing and remaking content folder from PREVIOUS Hugo run."
+rm -fr $CONTENT
+mkdir -p $CONTENT
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${CONTENT}/_SITE_BUILDER_STOP"
+
+echo "Removing and remaking static source folder from PREVIOUS Hugo run."
+rm -fr $STATICSOURCE
+mkdir -p $STATICSOURCE
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${STATICSOURCE}/_SITE_BUILDER_STOP"
+
+echo "Removing and remaking public folder from PREVIOUS Hugo run."
+rm -fr $PUBLIC
+mkdir -p $PUBLIC
+# Prevent Hugo Docs Builder from recursing into this directory.
+touch "${PUBLIC}/_SITE_BUILDER_STOP"
+
+echo "Prevent Hugo Docs Builder from recursing into output docs directory."
+touch "${OUTPUT_DOCS_DIR}/_SITE_BUILDER_STOP"
+
 echo "Running ${SCRIPT_DIR}/hugo_docs_builder.py ${SOURCE_DIR}..."
 
 python "${SCRIPT_DIR}/hugo_docs_builder.py" $SOURCE_DIR
@@ -57,6 +78,10 @@ echo
 echo "Running hugo -D"
 
 hugo -D
+
+#exit
+
+# Can't delete and rebuild the output docs directory because it might have version control info in it.
 
 echo
 echo "Changing working directory to ${OUTPUT_DOCS_DIR}."
