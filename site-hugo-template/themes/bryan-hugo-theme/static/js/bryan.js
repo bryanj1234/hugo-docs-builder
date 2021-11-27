@@ -146,6 +146,12 @@ jQuery(document).ready(function() {
     $('#sidebar .highlightable').perfectScrollbar();
     setMenuHeight();
 
+    query_selection_str = '[active_menu_item="yes"]'
+    cur_page_menu_element = document.querySelector(query_selection_str);
+    if(cur_page_menu_element) {
+        cur_page_menu_element.scrollIntoView();
+    }
+
     jQuery('#overlay').on('click', function() {
         jQuery(document.body).toggleClass('sidebar-hidden');
         sidebarStatus = (jQuery(document.body).hasClass('sidebar-hidden') ? 'closed' : 'open');

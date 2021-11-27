@@ -32,6 +32,14 @@
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
         <pre><code class="html">{{$file_contents}}</code></pre>
 
+    {{else if eq .Params.source_file_ext "MD"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="md">{{$file_contents}}</code></pre>
+
     {{else if eq .Params.source_file_ext "PY"}}
 
         {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
@@ -47,6 +55,22 @@
 
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
         <pre><code class="bash">{{$file_contents}}</code></pre>
+
+    {{else if eq .Params.source_file_ext "JS"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="js">{{$file_contents}}</code></pre>
+
+    {{else if eq .Params.source_file_ext "CSS"}}
+
+        {{$GitHubFile := path.Join "https://github.com/bryanj1234/bryanj1234.github.io/blob/master/projects/" .Params.source_file_rel_name }}
+        <a href = "{{$GitHubFile}}">{{$GitHubFile}}</a>
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="css-extras">{{$file_contents}}</code></pre>
 
     {{else if eq .Params.source_file_ext "CSD"}}
 
