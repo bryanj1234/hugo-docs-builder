@@ -1,5 +1,5 @@
 ## Make a simple website from a code repository.
 
-### An example: [bryanj1234.github.io/hugo-docs-builder/](https://bryanj1234.github.io/hugo-docs-builder/)
-
-### Documentation: [_SITE_BUILDER_START.md](_SITE_BUILDER_START.md)
+Documentation: [\_SITE_BUILDER_START.md](_SITE_BUILDER_START.md)
+  
+An example: [bryanj1234.github.io/hugo-docs-builder/](https://bryanj1234.github.io/hugo-docs-builder/)
