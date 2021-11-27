@@ -27,6 +27,9 @@ print()
 ####################################################################################################
 ####################################################################################################
 
+# INCREASE PERFORMANCE
+dict_index_files_made = {}
+dict_entry_point_info = {}
 
 def recursive_find_site_builder_start(cur_dir_path_str, entry_points_list):
 
@@ -49,15 +52,17 @@ def recursive_find_site_builder_start(cur_dir_path_str, entry_points_list):
         print("Specify source content directory, relative to the above working directory.")
         sys.exit(1)
 
+# FIXME: Use a dictionary for lookup. This is way too much file I/O.
 def DOCBUILDER_index_file_exists(content_dir_abs_path_str):
-    index_1_str = os.path.join(content_dir_abs_path_str, "_index.md")
+    index_str = os.path.join(content_dir_abs_path_str, "_index.md")
 
-    bool_index_exists = pathlib.Path(index_1_str).is_file()
+    # Test both, but use short-circuiting.
+    bool_index_exists = (index_str in dict_index_files_made) or pathlib.Path(index_str).is_file()
 
     return bool_index_exists
 
 # Recursively adds missing _index.md files from output_content_dir_path_str to cur_dir.
-# FIXME: Use a dictionary for lookup. This is way too much file I/O.
+# Use a dictionary for lookup to prevent too much file I/O.
 def make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, cur_dir):
     cur_dir = pathlib.Path(cur_dir).absolute()
 
@@ -67,9 +72,11 @@ def make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, cur_di
         with open(index_file_str, 'w') as the_file:
             dir_name = pathlib.Path(cur_dir).name
             the_file.write('---\nTitle: ' + dir_name + '\n---\n')
+            # Add to list of index files already made.
+            dict_index_files_made[cur_dir] = True
 
-    if not cur_dir == pathlib.Path(output_content_dir_path_str).absolute():
-        parent_dir = pathlib.Path(cur_dir).parent.absolute()
+    parent_dir = pathlib.Path(cur_dir).parent.absolute()
+    if not parent_dir == pathlib.Path(output_content_dir_path_str).absolute():
         make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, parent_dir)
 
 def recursive_dir_scan(cur_dir_path_str, cur_contents):
@@ -191,6 +198,8 @@ def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_
                 index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
+                    # Add to list of index files already made.
+                    dict_index_files_made[content_dir_abs_path_str] = True
 
         elif file_name == '_SITE_BUILDER_STOP':
             pass
@@ -224,6 +233,24 @@ def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_
         traceback.print_exc()
         sys.exit(1)
 
+def get_entry_point_info(source_file_abs_path_str):
+
+    entry_point_info = False
+    if source_file_abs_path_str in dict_entry_point_info:
+        entry_point_info = dict_entry_point_info[source_file_abs_path_str]
+    else:
+        with open(source_file_abs_path_str, 'r') as f:
+            post = frontmatter.loads(f.read())
+            f.close()
+            entry_point_info = {}
+            if 'title' in post:
+                entry_point_info['title'] = post['title']
+            else:
+                exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
+                raise Exception(exception_str)
+
+    return entry_point_info
+
 def process_flattened_list(flat_lists, output_content_dir_path_str, output_static_dir_path_str, publish_static_source_dir_str):
 
     for entry_point_rec in flat_lists:
@@ -233,16 +260,9 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
 
         # Get entry point into from entry point start file...
         # FIXME: Use a dictionary for lookup. This is way too much file I/O.
-        entry_point_title_str = "__NO_TITLE__"
         source_file_abs_path_str = os.path.join(entry_point_dir_str, entry_point_file_str)
-        with open(source_file_abs_path_str, 'r') as f:
-            post = frontmatter.loads(f.read())
-            f.close()
-            if 'title' in post:
-                entry_point_title_str = post['title']
-            else:
-                exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
-                raise Exception(exception_str)
+        entry_point_info = get_entry_point_info(source_file_abs_path_str)
+        entry_point_title_str = entry_point_info['title']
 
         flat_list = entry_point_rec["flat_list"]
         for rec in flat_list:
