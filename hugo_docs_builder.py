@@ -71,7 +71,12 @@ def make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, cur_di
         index_file_str = os.path.join(cur_dir, "_index.md")
         with open(index_file_str, 'w') as the_file:
             dir_name = pathlib.Path(cur_dir).name
-            the_file.write('---\nTitle: ' + dir_name + '\n---\n')
+            the_file.write('---\n')
+            the_file.write('title: ' + dir_name + '\n')
+            the_file.write('type:   bryanfolder\n')
+            the_file.write('---\n')
+
+
             # Add to list of index files already made.
             dict_index_files_made[cur_dir] = True
 
