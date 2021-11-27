@@ -28,12 +28,17 @@
 {{ define "bryan-section-file" }}
 {{ $showvisitedlinks := .showvisitedlinks }}
 {{ $currentNode := .currentnode }}
-{{ $currentFileUniqueID := "" }}
 {{ $curContext := "curContext" }}
-{{ with $currentNode.File }}{{ $currentFileUniqueID = .UniqueID }}{{ end }}
+{{ $active_menu_item := .active_menu_item }}
+{{ with $currentNode.File }}{{ end }}
     {{with .curContext}}
 
-        <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item">
+        {{$class := "dd-item"}}
+        {{if eq $active_menu_item "yes"}}
+            {{$class = "dd-item active"}}
+        {{end}}
+
+        <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="{{$class}}" active_menu_item="{{$active_menu_item}}">
             <a href="{{ .RelPermalink}}" class="static_file_link">
             {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
             {{ if $showvisitedlinks}}<i class="fas fa-check read-icon"></i>{{end}}

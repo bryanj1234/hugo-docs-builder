@@ -165,8 +165,31 @@ def make_dir_if_necessary(content_dir_abs_path_str):
     # Make new directory, with parents, if necessary.
     pathlib.Path(content_dir_abs_path_str).mkdir(parents=True, exist_ok=True)
 
-def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_file_abs_path_str, \
-                    source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str):
+
+def make_new_file(new_file_info):
+
+    # new_file_info = {
+    #     'output_content_dir_path_str': output_content_dir_path_str,
+    #     'content_dir_abs_path_str': content_dir_abs_path_str,
+    #     'source_file_abs_path_str': source_file_abs_path_str,
+    #     'source_file_rel_path_str': source_file_rel_path_str,
+    #     'output_static_dir_path_str': output_static_dir_path_str,
+    #     'publish_static_source_dir_str': publish_static_source_dir_str,
+    #     'source_dir_path_str': source_dir_path_str,
+    #     'source_file_path_str': source_file_path_str
+    # }
+
+    output_content_dir_path_str = new_file_info['output_content_dir_path_str']
+    content_dir_abs_path_str = new_file_info['content_dir_abs_path_str']
+    source_file_abs_path_str = new_file_info['source_file_abs_path_str']
+    source_file_rel_path_str = new_file_info['source_file_rel_path_str']
+    output_static_dir_path_str = new_file_info['output_static_dir_path_str']
+    publish_static_source_dir_str = new_file_info['publish_static_source_dir_str']
+    source_dir_path_str = new_file_info['source_dir_path_str']
+    source_file_path_str = new_file_info['source_file_path_str']
+
+    # Make a new directory in the content folder if you need to.
+    make_dir_if_necessary(content_dir_abs_path_str)
 
     # Add an index files if necessary
     make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, content_dir_abs_path_str)
@@ -211,6 +234,15 @@ def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_
 
         else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
+            # Copy the original file to the static source directory
+
+            # Make a new directory if you need to.
+            make_dir_if_necessary(source_dir_path_str)
+
+            # Copy file
+            shutil.copyfile(source_file_abs_path_str, source_file_path_str)
+
+            # Wrap upo the file to put into the content directory
             wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, '__WRAP__' + file_name + ".md")
 
             with open(wrapper_md_file_path_str, 'w') as the_file:
@@ -226,7 +258,6 @@ def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_
                 the_file.write('\n---')
                 the_file.write('\n\n')
 
-                # The rest of the behavior depends on what the user wants to do in Hugo templates.
 
         # END File handling depends on file name. ##########################################################
 
@@ -291,30 +322,26 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
                 # Get old absolute path
                 source_file_abs_path_str = os.path.join(dir_abs_path_str, name_str)
 
+                # Make new content path
+                content_dir_abs_path_str = os.path.join(output_content_dir_path_str, entry_point_title_str, dir_rel_entry_point_dir_str)
+
                 # Make static source path
                 source_dir_path_str = os.path.join(output_static_dir_path_str, dir_rel_source_dir_str)
                 source_file_path_str = os.path.join(source_dir_path_str, name_str)
                 source_file_rel_path_str = os.path.join(dir_rel_source_dir_str, name_str)
 
-                # Make new content path
-                content_dir_abs_path_str = os.path.join(output_content_dir_path_str, entry_point_title_str, dir_rel_entry_point_dir_str)
-
-                # OUTPUT STATIC SOURCE #################################################################
-
-                # Make a new directory if you need to.
-                make_dir_if_necessary(source_dir_path_str)
-
-                # Copy file
-                shutil.copyfile(source_file_abs_path_str, source_file_path_str)
-
-                # OUTPUT CONTENT #################################################################
-
-                # Make a new directory if you need to.
-                make_dir_if_necessary(content_dir_abs_path_str)
-
                 # Make new file
-                make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_file_abs_path_str, \
-                                source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str)
+                new_file_info = {
+                    'output_content_dir_path_str': output_content_dir_path_str,
+                    'content_dir_abs_path_str': content_dir_abs_path_str,
+                    'source_file_abs_path_str': source_file_abs_path_str,
+                    'source_file_rel_path_str': source_file_rel_path_str,
+                    'output_static_dir_path_str': output_static_dir_path_str,
+                    'publish_static_source_dir_str': publish_static_source_dir_str,
+                    'source_dir_path_str': source_dir_path_str,
+                    'source_file_path_str': source_file_path_str
+                }
+                make_new_file(new_file_info)
 
             else: # "DIR"
                 # Nothing to do here, since will make directories only as needed when creating files...

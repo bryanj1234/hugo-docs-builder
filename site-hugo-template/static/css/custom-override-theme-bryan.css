@@ -102,6 +102,7 @@ a {
     color: var(--STATIC-FILE-LINK-color);
 }
 
+
 .anchor {
     color: var(--MAIN-ANCHOR-color);
 }
@@ -169,6 +170,7 @@ a:hover {
     color: var(--STATIC-FILE-LINK-color);
 }
 
+
 #sidebar hr {
     border-color: var(--MENU-SECTION-HR-color);
 }
@@ -193,4 +195,11 @@ a:hover {
 
 #homelinks a:hover {
   color: var(--MENU-HOME-LINK-HOVER-color);
+}
+
+video.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
 }

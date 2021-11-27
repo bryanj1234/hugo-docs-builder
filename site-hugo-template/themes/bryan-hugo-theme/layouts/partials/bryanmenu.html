@@ -101,17 +101,24 @@
 <!-- templates -->
 
 {{ define "bryan-menu-show-section-files" }}
+    {{$currentFileUniqueID := .currentFileUniqueID}}
     {{with .curContext}}
         {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
 
         {{$bool_exists_file := false}}
         {{range .Pages.ByTitle}}
+
+            {{$active_menu_item := "no"}}
+            {{if eq .File.UniqueID $currentFileUniqueID}}
+                {{$active_menu_item = "yes"}}
+            {{end}}
+
             {{if .Params.is_source_file}}
                 {{ if not $bool_exists_file }}
                     {{$bool_exists_file = true}}
                     <ul>
                 {{end}}
-                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
+                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks "active_menu_item" $active_menu_item}}
             {{end}}
         {{end}}
 
@@ -134,10 +141,10 @@
   {{if and .IsSection (or (not .Params.hidden) $.showhidden)}}
     {{safeHTML .Params.head}}
 
-    {{$active_menu_item := ""}}
-    {{if eq .File.UniqueID $currentFileUniqueID}}
-      {{$active_menu_item = "yes"}}
-    {{end}}
+      {{$active_menu_item := "no"}}
+      {{if eq .File.UniqueID $currentFileUniqueID}}
+          {{$active_menu_item = "yes"}}
+      {{end}}
 
     <li
         data-nav-id="{{.RelPermalink}}"
@@ -162,7 +169,8 @@
       {{print (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) )   }}
       -->
       {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
-          {{ template "bryan-menu-show-section-files" dict "curContext" . }}
+
+          {{ template "bryan-menu-show-section-files" dict "curContext" . "currentFileUniqueID" $currentFileUniqueID}}
 
           {{ $numberOfPages := (add (len ( where .Pages "Params.hidden" "ne" true )) (len ( where .Sections "Params.hidden" "ne" true ))) }}
           {{ if ne $numberOfPages 0 }}
