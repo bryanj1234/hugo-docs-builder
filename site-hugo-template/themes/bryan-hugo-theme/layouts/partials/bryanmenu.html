@@ -154,38 +154,39 @@
       -->
       {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
           {{ template "bryan-menu-show-section-files" dict "curContext" . }}
+
+          {{ $numberOfPages := (add (len ( where .Pages "Params.hidden" "ne" true )) (len ( where .Sections "Params.hidden" "ne" true ))) }}
+          {{ if ne $numberOfPages 0 }}
+            <ul>
+              {{ $currentNode.Scratch.Set "pages" .Pages }}
+              {{ if .Sections}}
+                {{ $currentNode.Scratch.Set "pages" (.Pages | union .Sections) }}
+              {{end}}
+              {{ $pages := ($currentNode.Scratch.Get "pages") }}
+
+            {{if eq .Site.Params.ordersectionsby "title"}}
+              {{ range $pages.ByTitle }}
+                {{if not .Params.is_source_file}}
+                  {{ if and .Params.hidden (not $.showhidden) }}
+                  {{else}}
+                      {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+                  {{end}}
+                {{end}}
+              {{ end }}
+            {{else}}
+              {{ range $pages.ByWeight }}
+                {{if not .Params.is_source_file}}
+                  {{ if and .Params.hidden (not $.showhidden) }}
+                  {{else}}
+                      {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+                  {{end}}
+                {{end}}
+              {{ end }}
+            {{end}}
+            </ul>
+          {{ end }}
+
       {{end}}
-
-      {{ $numberOfPages := (add (len ( where .Pages "Params.hidden" "ne" true )) (len ( where .Sections "Params.hidden" "ne" true ))) }}
-      {{ if ne $numberOfPages 0 }}
-        <ul>
-          {{ $currentNode.Scratch.Set "pages" .Pages }}
-          {{ if .Sections}}
-            {{ $currentNode.Scratch.Set "pages" (.Pages | union .Sections) }}
-          {{end}}
-          {{ $pages := ($currentNode.Scratch.Get "pages") }}
-
-        {{if eq .Site.Params.ordersectionsby "title"}}
-          {{ range $pages.ByTitle }}
-            {{if not .Params.is_source_file}}
-              {{ if and .Params.hidden (not $.showhidden) }}
-              {{else}}
-                  {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
-              {{end}}
-            {{end}}
-          {{ end }}
-        {{else}}
-          {{ range $pages.ByWeight }}
-            {{if not .Params.is_source_file}}
-              {{ if and .Params.hidden (not $.showhidden) }}
-              {{else}}
-                  {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
-              {{end}}
-            {{end}}
-          {{ end }}
-        {{end}}
-        </ul>
-      {{ end }}
     </li>
   {{else}}
     {{ if not .Params.Hidden }}
