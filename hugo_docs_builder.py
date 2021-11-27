@@ -56,13 +56,21 @@ def DOCBUILDER_index_file_exists(content_dir_abs_path_str):
 
     return bool_index_exists
 
-def make_DOCBUILDER_index_file_if_necessary(content_dir_abs_path_str):
+# Recursively adds missing _index.md files from output_content_dir_path_str to cur_dir.
+# FIXME: Use a dictionary for lookup. This is way too much file I/O.
+def make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, cur_dir):
+    cur_dir = pathlib.Path(cur_dir).absolute()
+
     # Add _index.md file for Hugo, BUT ONLY IF NOT ALREADY PRESENT. DON'T WANT TO CLOBBER ONE GENERATED FROM README.
-    if not DOCBUILDER_index_file_exists(content_dir_abs_path_str):
-        index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
+    if not DOCBUILDER_index_file_exists(cur_dir):
+        index_file_str = os.path.join(cur_dir, "_index.md")
         with open(index_file_str, 'w') as the_file:
-            dir_name = pathlib.Path(content_dir_abs_path_str).name
+            dir_name = pathlib.Path(cur_dir).name
             the_file.write('---\nTitle: ' + dir_name + '\n---\n')
+
+    if not cur_dir == pathlib.Path(output_content_dir_path_str).absolute():
+        parent_dir = pathlib.Path(cur_dir).parent.absolute()
+        make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, parent_dir)
 
 def recursive_dir_scan(cur_dir_path_str, cur_contents):
     # Increment level
@@ -145,7 +153,11 @@ def make_dir_if_necessary(content_dir_abs_path_str):
     # Make new directory, with parents, if necessary.
     pathlib.Path(content_dir_abs_path_str).mkdir(parents=True, exist_ok=True)
 
-def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str):
+def make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_file_abs_path_str, \
+                    source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str):
+
+    # Add an index files if necessary
+    make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, content_dir_abs_path_str)
 
     # Skip files that result it frontmatter module errors, for example when a markdown file contains problematic backslashes.
     try:
@@ -154,9 +166,6 @@ def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_fil
 
         _, file_extension = os.path.splitext(source_file_abs_path_str)
         file_extension = file_extension.upper().replace(".", "")
-
-        # Add an index file if necessary
-        make_DOCBUILDER_index_file_if_necessary(content_dir_abs_path_str)
 
         # START File handling depends on file name. ##########################################################
 
@@ -182,9 +191,6 @@ def make_new_file(content_dir_abs_path_str, source_file_abs_path_str, source_fil
                 index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
-
-        elif file_name == '_TEMP_DOCBUILDER_INDEX':
-            pass
 
         elif file_name == '_SITE_BUILDER_STOP':
             pass
@@ -282,7 +288,7 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
                 make_dir_if_necessary(content_dir_abs_path_str)
 
                 # Make new file
-                make_new_file(content_dir_abs_path_str, source_file_abs_path_str, \
+                make_new_file(output_content_dir_path_str, content_dir_abs_path_str, source_file_abs_path_str, \
                                 source_file_rel_path_str, output_static_dir_path_str, publish_static_source_dir_str)
 
             else: # "DIR"
