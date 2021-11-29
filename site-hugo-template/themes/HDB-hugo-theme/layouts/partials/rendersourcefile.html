@@ -1,6 +1,6 @@
 {{ partial "header.html" . }}
 
-{{ template "bryan-render-source-file" dict "context" .}}
+{{ template "render-source-file" dict "context" .}}
 
 {{ partial "footer.html" . }}
 
@@ -12,7 +12,7 @@
 
 
 
-{{ define "bryan-render-source-file" }}
+{{ define "render-source-file" }}
     {{with .context}}
 
     <!--

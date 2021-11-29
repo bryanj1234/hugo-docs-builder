@@ -2,7 +2,7 @@ baseURL = ""
 
 title = "Bryan Johnston"
 
-theme = "bryan-hugo-theme"
+theme = "HDB-hugo-theme"
 
 [params]
 

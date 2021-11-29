@@ -24,11 +24,11 @@
     <ul class="topics">
         {{if eq .Site.Params.ordersectionsby "title"}}
           {{range .Site.Home.Sections.ByTitle}}
-          {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
+          {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
           {{end}}
         {{else}}
           {{range .Site.Home.Sections.ByWeight}}
-          {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
+          {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks}}
           {{end}}
         {{end}}
     </ul>
@@ -100,7 +100,7 @@
 
 <!-- templates -->
 
-{{ define "bryan-menu-show-section-files" }}
+{{ define "menu-show-section-files" }}
     {{$currentFileUniqueID := .currentFileUniqueID}}
     {{with .curContext}}
         {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
@@ -118,7 +118,7 @@
                     {{$bool_exists_file = true}}
                     <ul>
                 {{end}}
-                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks "active_menu_item" $active_menu_item}}
+                {{ template "section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks "active_menu_item" $active_menu_item}}
             {{end}}
         {{end}}
 
@@ -131,7 +131,7 @@
 {{end}}
 
 
-{{ define "bryan-section-tree-nav" }}
+{{ define "section-tree-nav" }}
 {{ $showvisitedlinks := .showvisitedlinks }}
 {{ $currentNode := .currentnode }}
 {{ $currentFileUniqueID := "" }}
@@ -170,7 +170,7 @@
       -->
       {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
 
-          {{ template "bryan-menu-show-section-files" dict "curContext" . "currentFileUniqueID" $currentFileUniqueID}}
+          {{ template "menu-show-section-files" dict "curContext" . "currentFileUniqueID" $currentFileUniqueID}}
 
           {{ $numberOfPages := (add (len ( where .Pages "Params.hidden" "ne" true )) (len ( where .Sections "Params.hidden" "ne" true ))) }}
           {{ if ne $numberOfPages 0 }}
@@ -186,7 +186,7 @@
                 {{if not .Params.is_source_file}}
                   {{ if and .Params.hidden (not $.showhidden) }}
                   {{else}}
-                      {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+                      {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
                   {{end}}
                 {{end}}
               {{ end }}
@@ -195,7 +195,7 @@
                 {{if not .Params.is_source_file}}
                   {{ if and .Params.hidden (not $.showhidden) }}
                   {{else}}
-                      {{ template "bryan-section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
+                      {{ template "section-tree-nav" dict "sect" . "currentnode" $currentNode "showvisitedlinks" $showvisitedlinks }}
                   {{end}}
                 {{end}}
               {{ end }}

@@ -73,7 +73,7 @@ def make_DOCBUILDER_index_files_if_necessary(output_content_dir_path_str, cur_di
             dir_name = pathlib.Path(cur_dir).name
             the_file.write('---\n')
             the_file.write('title: ' + dir_name + '\n')
-            the_file.write('type:   bryanfolder\n')
+            the_file.write('type:   HDBfolder\n')
             the_file.write('---\n')
 
 
@@ -248,7 +248,7 @@ def make_new_file(new_file_info):
             with open(wrapper_md_file_path_str, 'w') as the_file:
                 the_file.write('---')
                 the_file.write('\nTitle: ' + file_name)
-                the_file.write('\ntype: bryansourcefile')
+                the_file.write('\ntype: HDBsourcefile')
                 the_file.write('\nis_source_file: true')
                 the_file.write('\nsource_file_name: ' + file_name)
                 the_file.write('\nsource_file_rel_name: ' + source_file_rel_path_str)

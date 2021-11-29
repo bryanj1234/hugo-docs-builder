@@ -1,5 +1,5 @@
 
-{{ define "bryan-show-section-files" }}
+{{ define "show-section-files" }}
     {{ $curContext := .curContext }}
 
     {{ $bool_exists_file := false }}
@@ -14,7 +14,7 @@
                     <h2>Files</h2>
                     <ul>
                 {{end}}
-                {{ template "bryan-section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
+                {{ template "section-file" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
             {{end}}
         {{end}}
 
@@ -25,7 +25,7 @@
     {{end}}
 {{end}}
 
-{{ define "bryan-section-file" }}
+{{ define "section-file" }}
 {{ $showvisitedlinks := .showvisitedlinks }}
 {{ $currentNode := .currentnode }}
 {{ $curContext := "curContext" }}
@@ -54,7 +54,7 @@
 
 
 
-{{ define "bryan-show-section-items" }}
+{{ define "show-section-items" }}
     {{ $curContext := .curContext }}
 
     {{ $bool_exists_file := false }}
@@ -70,7 +70,7 @@
                         <h2>Folders</h2>
                         <ul>
                     {{end}}
-                    {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
+                    {{ template "section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
                 {{end}}
             {{end}}
         {{else}}
@@ -81,7 +81,7 @@
                         <h2>Folders</h2>
                         <ul>
                     {{end}}
-                    {{ template "bryan-section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
+                    {{ template "section-item" dict "curContext" . "currentnode" . "showvisitedlinks" $showvisitedlinks}}
                 {{end}}
             {{end}}
         {{end}}
@@ -93,7 +93,7 @@
     {{end}}
 {{end}}
 
-{{ define "bryan-section-item" }}
+{{ define "section-item" }}
 {{ $showvisitedlinks := .showvisitedlinks }}
 {{ $currentNode := .currentnode }}
 {{ $currentFileUniqueID := "" }}
@@ -109,8 +109,6 @@
                     <i class="fas fa-check read-icon"></i>
                   {{ end }}
                 </a>
-
-                <!-- {{ template "bryan-show-section-files" dict "curContext" .}} -->
             </li>
         {{else}}
             {{ if not .Params.Hidden }}
@@ -119,8 +117,6 @@
                     {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
                     {{ if $showvisitedlinks}}<i class="fas fa-check read-icon"></i>{{end}}
                     </a>
-
-                    <!-- {{ template "bryan-show-section-files" dict "curContext" .}} -->
                 </li>
             {{ end }}
         {{end}}
