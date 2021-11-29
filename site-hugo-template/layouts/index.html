@@ -1,0 +1,13 @@
+{{ partial "header.html" . }}
+
+{{ partial "get-and-show-page-items.html" .}}
+
+
+{{ template "show-section-files" dict "curContext" . }}
+{{ template "show-section-items" dict "curContext" . }}
+
+
+{{ .Content }}
+
+
+{{ partial "footer.html" . }}
