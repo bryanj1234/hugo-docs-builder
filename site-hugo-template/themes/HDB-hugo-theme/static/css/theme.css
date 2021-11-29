@@ -1079,12 +1079,15 @@ td {
 }
 @media only all and (max-width: 47.938em) {
     #sidebar {
-        width: 70%;
-        left: -70%;
+        width: 300px;
+        left: -300px;
         background: #FFFFFF;
     }
     #sidebar #header-wrapper {
         width: 230px;
+    }
+    #sidebar:hover {
+        width: 300px;
     }
     #body {
         margin-left: 0;
@@ -1103,7 +1106,7 @@ td {
         left: 0;
     }
     .sidebar-hidden #body {
-        margin-left: 70%;
+        margin-left: 300px;
         overflow: hidden;
     }
     .sidebar-hidden #overlay {
