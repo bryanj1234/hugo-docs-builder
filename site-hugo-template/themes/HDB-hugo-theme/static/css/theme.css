@@ -72,16 +72,10 @@ pre {
 b, strong, label, th {
     font-weight: 600;
 }
-.default-animation, #header #logo-svg, #header #logo-svg path, #sidebar, #sidebar ul, #body, #body .padding, #body .nav {
+.default-animation, #sidebar, #sidebar ul, #body, #body .padding, #body .nav {
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     transition: all 0.5s ease;
-}
-#grav-logo {
-    max-width: 60%;
-}
-#grav-logo path {
-    fill: #fff !important;
 }
 #sidebar {
     font-weight: 300 !important;
@@ -101,7 +95,8 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
     border-color: #00bdf3;
     box-shadow: inset 0 1px 3px rgba(0,0,0,.06),0 0 5px rgba(0,169,218,.7)
 }
-#header-wrapper {
+
+#sidebar #header-wrapper {
     background: #8451a1;
     color: #fff;
     text-align: center;
@@ -111,13 +106,7 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
 #header a {
     display: inline-block;
 }
-#header #logo-svg {
-    width: 8rem;
-    height: 2rem;
-}
-#header #logo-svg path {
-    fill: #fff;
-}
+
 .searchbox {
     margin-top: 1rem;
     position: relative;
@@ -167,21 +156,47 @@ textarea:focus, input[type="email"]:focus, input[type="number"]:focus, input[typ
 #sidebar-toggle-span {
     display: none;
 }
+
+
 @media only all and (max-width: 47.938em) {
     #sidebar-toggle-span {
         display: inline;
     }
 }
+
+#logo {
+    width: 265px;
+}
+.searchbox {
+    width: 265px;
+}
+
+#sidebar #header-wrapper {
+    width: 300px;
+}
+
+#sidebar:hover {
+    width: 30%;
+    transition-property: width;
+    transition-duration: .1s;
+    transition-delay: 0s;
+}
+
 #sidebar {
-    background-color: #322A38;
     position: fixed;
     top: 0;
     width: 300px;
     bottom: 0;
     left: 0;
-    font-weight: 400;
     font-size: 15px;
+    background: rgba(0, 0, 0, 0.0);
+    z-index: 99 !important;
+    transition-property: width;
+    transition-duration: 0s;
+    transition-delay: .1s;
 }
+
+
 #sidebar a {
     color: #ccc;
 }
@@ -1015,22 +1030,49 @@ td {
 #body #breadcrumbs span {
     padding: 0 0.1rem;
 }
+
 @media only all and (max-width: 59.938em) {
     #sidebar {
         width: 230px;
+        background: #FFFFFF;
+    }
+    #sidebar #header-wrapper {
+        width: 230px;
+    }
+    #sidebar:hover {
+        width: 100%;
     }
     #body {
         margin-left: 230px;
+    }
+    #logo img {
+        width: 200px;
+    }
+    .searchbox input {
+        width: 200px;
     }
 }
 @media only all and (max-width: 47.938em) {
     #sidebar {
         width: 230px;
         left: -230px;
+        background: #FFFFFF;
+    }
+    #sidebar #header-wrapper {
+        width: 230px;
+    }
+    #sidebar:hover {
+        width: 100%;
     }
     #body {
         margin-left: 0;
         width: 100%;
+    }
+    #logo {
+        width: 200px;
+    }
+    .searchbox {
+        width: 200px;
     }
     .sidebar-hidden {
         overflow: hidden;
