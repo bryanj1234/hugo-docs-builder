@@ -115,6 +115,7 @@ s .bg {
  .searchbox input:-ms-input-placeholder {
      color: rgba(255, 255, 255, 0.6);
 }
+
  #sidebar-toggle-span {
      display: none;
 }
@@ -123,6 +124,16 @@ s .bg {
          display: inline;
     }
 }
+ #sidebar-toggle-span-2 {
+     display: none;
+     float:  right;
+}
+ @media only all and (max-width: 47.938em) {
+     #sidebar-toggle-span-2 {
+         display: inline;
+    }
+}
+
  .ps-container >.ps-scrollbar-y-rail {
      width: 2em;
 }
@@ -1011,16 +1022,16 @@ s .bg {
 }
  @media only all and (max-width: 47.938em) {
      #sidebar  {
-         left: -300px;
+         left: -500px;
     }
      #sidebar_menu  {
-         width: 300px;
+         width: 500px;
     }
       #sidebar_menu:hover{
          width: 500px;
     }
      #sidebar #header-wrapper{
-         width: 300px;
+         width: 500px;
     }
      #body {
          margin-left: 0;
@@ -1185,11 +1196,17 @@ s .bg {
      padding-right: 1rem !important;
      margin-right: 0.5rem !important;
 }
+
  #sidebar-toggle-span {
      border-right: thin solid #DAD8D8 !important;
      padding-right: 0.5rem !important;
      margin-right: 1rem !important;
 }
+ #sidebar-toggle-span-2 {
+     padding-right: 0.5rem !important;
+     margin-right: 1rem !important;
+}
+
  .btn {
      display: inline-block !important;
      padding: 6px 12px !important;

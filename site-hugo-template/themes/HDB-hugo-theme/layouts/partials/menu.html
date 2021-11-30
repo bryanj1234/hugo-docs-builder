@@ -3,12 +3,20 @@
 {{ $currentNode := . }}
 {{ $showvisitedlinks := .Site.Params.showVisitedLinks }}
   <div id="header-wrapper">
+
     <div id="header">
+    <div id="sidebar-toggle-span-2">
+        <a href="#" id="sidebar-toggle-2" data-sidebar-toggle="">
+          <img src="/images/arrow-left.jpg" width="100px">
+        </a>
+    </div>
       {{ partial "logo.html" . }}
     </div>
+
     {{if not .Site.Params.disableSearch}}
         {{ partial "search.html" . }}
     {{end}}
+
   </div>
   {{if not .Site.Params.disableLandingPageButton }}
     <section id="homelinks">
