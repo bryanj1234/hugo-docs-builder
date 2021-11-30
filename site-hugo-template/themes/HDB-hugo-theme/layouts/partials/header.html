@@ -9,7 +9,6 @@
     <title>{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
 
     {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
-    <link href="{{"css/_HDB-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/prism.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
     <link href="{{"css/fontawesome-all.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
