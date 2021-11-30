@@ -1022,16 +1022,16 @@ s .bg {
 }
  @media only all and (max-width: 47.938em) {
      #sidebar  {
-         left: -500px;
+         left: -430px;
     }
      #sidebar_menu  {
-         width: 500px;
+         width: 430px;
     }
       #sidebar_menu:hover{
-         width: 500px;
+         width: 430px;
     }
      #sidebar #header-wrapper{
-         width: 500px;
+         width: 430px;
     }
      #body {
          margin-left: 0;
