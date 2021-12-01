@@ -171,10 +171,10 @@ s .bg {
 }
 
  #logo {
-     width: 290px;
+     width: 270px;
 }
  .searchbox {
-     width: 290px;
+     width: 333px;
 }
  #sidebar_menu {
      width: 350px;
@@ -1049,7 +1049,7 @@ s .bg {
          width: 220px;
     }
      .searchbox {
-         width: 220px;
+         width: 215px;
     }
 }
  @media only all and (max-width: 47.938em) {

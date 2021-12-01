@@ -16,7 +16,7 @@
     --MENU-HOME-LINK-color: #4477aa; /* Color of the home button text */
     --MENU-HOME-LINK-HOVER-color: #ffffff; /* Color of the hovered home button text */
 
-    --MENU-HEADER-BG-color:#eeeeee; /* Background color of menu header */ /*fecbb8, f6f8fa, ff7a4b */
+    --MENU-HEADER-BG-color:#ffffff; /* Background color of menu header */ /*fecbb8, f6f8fa, ff7a4b */
     --MENU-HEADER-BORDER-color:#aaaaaa; /*Color of menu header border */
 
     --MENU-SEARCH-BG-color:#FFFFFF; /* Search field background color (by default borders + icons) */
@@ -111,7 +111,7 @@ a:hover {
 }
 
 #sidebar #header-wrapper {
-    background-color: var(--MENU-SECTIONS-BG-color);
+    background-color: var(--MENU-HEADER-BG-color);
     color: var(--MENU-SEARCH-BOX-color);
     text-align: left;
     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
@@ -119,7 +119,8 @@ a:hover {
 
 .searchbox {
     background: var(--MENU-SEARCH-BG-color);
-    border-color: var(--MENU-SEARCH-BG-color);
+    border: 1px solid;
+    border-color: var(--MENU-SECTIONS-BG-color);
 }
 
 #sidebar .highlightable {
