@@ -67,11 +67,13 @@
                     {{$use_title = (.Params.title_breadcrumbs) }}
                   {{end}}
 
-                 {{if $showBreadcrumb}}
-                    {{ template "breadcrumb" dict "page" . "value" $use_title }}
-                 {{ else }}
-                   {{ $use_title}}
-                 {{ end }}
+                  {{if not .IsHome}}
+                    {{if $showBreadcrumb}}
+                      {{ template "breadcrumb" dict "page" . "value" $use_title }}
+                    {{ else }}
+                      {{ $use_title}}
+                    {{ end }}
+                  {{end}}
                   </span>
                 </div>
                 {{ if $toc }}
@@ -103,9 +105,11 @@
             {{$use_title := $parent.Title}}
             {{if isset $parent.Params "title_breadcrumbs" }}
               {{$use_title = ($parent.Params.title_breadcrumbs) }}
+            {{else if .page.Parent.IsHome}}
+              {{$use_title = "<i class=\"fas fa-home\"></i>" }}
             {{end}}
 
-            {{ $value := (printf "<a href='%s'>%s</a> > %s" $parent.RelPermalink $use_title .value) }}
+            {{ $value := (printf "<a href='%s'>%s</a> <i class=\"fas fa-angle-right\"></i> %s" $parent.RelPermalink $use_title .value) }}
             {{ template "breadcrumb" dict "page" $parent "value" $value }}
           {{else}}
             {{.value|safeHTML}}

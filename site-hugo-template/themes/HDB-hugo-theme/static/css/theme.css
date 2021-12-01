@@ -349,17 +349,17 @@ s .bg {
      border: 1px solid #ccc;
 }
  #body .padding {
-     padding: 1rem 2rem;
+     /*padding: 1rem 2rem;*/
 }
  @media only all and (max-width: 59.938em) {
      #body .padding {
          position: static;
-         padding: 15px 3rem;
+         /*padding: 15px 3rem;*/
     }
 }
  @media only all and (max-width: 47.938em) {
      #body .padding {
-         padding: 5px 1rem;
+         /*padding: 5px 1rem;*/
     }
 }
  #body h1 + hr {
@@ -889,7 +889,7 @@ s .bg {
      border-right-color: rgba(0, 0, 0, 0.8);
 }
  .highlightable {
-     padding: 1rem 0 1rem;
+     /*padding: 1rem 0 1rem;*/
      overflow: auto;
      position: relative;
 }
