@@ -25,20 +25,20 @@
 
     --MENU-SECTIONS-ACTIVE-BG-color:#ffffff; /* Background color of the active section and its childs */
     --MENU-SECTIONS-BG-color:#eeeeee; /* Background color of other sections */ /* e4f5ff */
-    --MENU-SECTIONS-LINK-color: #444444; /* Color of links in menu */
-    --MENU-SECTIONS-LINK-HOVER-color: #ffffff;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-HOVER-CATEGORY-BG-color: #666666;  /* Color of links in menu, when hovered */
+    --MENU-SECTIONS-LINK-color: #4477aa; /* Color of links in menu */
+    --MENU-SECTIONS-LINK-HOVER-color: #000000;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-HOVER-CATEGORY-BG-color: #efefef;  /* Color of links in menu, when hovered */
 
-    --MENU-SECTION-ACTIVE-CATEGORY-color: #ffffff; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #666666; /* Color of background for the active category (only) */
+    --MENU-SECTION-ACTIVE-CATEGORY-color: #4477aa; /* Color of active category text */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #efefef; /* Color of background for the active category (only) */
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #0000FF; /* Color of <hr> separator in menu */
 
-    --STATIC-FILE-LINK-color:#777777;
+    --STATIC-FILE-LINK-color:#555555;
 
-    --MENU-OPEN-FOLDER-color: #4477aa;
-    --MENU-CLOSED-FOLDER-color: #bbbbbb;
+    --MENU-OPEN-FOLDER-color: #2b7dd0;
+    --MENU-CLOSED-FOLDER-color: #4477aa;
 }
 
 body {
@@ -56,6 +56,11 @@ body {
 h1 {
     color: var(--MAIN-TITLE-color) !important;
     background: var(--MAIN-TITLE-BG-color);
+}
+
+#body_title {
+    font-size: 2rem !important;
+    padding:  .2rem;
 }
 
 h2, h3, h4, h5 {
@@ -151,7 +156,7 @@ a:hover {
 
 #sidebar ul li.active > a {
     background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
-    color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;
+    /*color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;*/
 }
 
 #sidebar ul li > a:hover{
@@ -196,9 +201,10 @@ video.center {
 
 .menufolderopen {
     color: var(--MENU-OPEN-FOLDER-color);
+    font-size: 1.3em;
 }
 li.active > a > .menufolderopen {
-    color: var(--MENU-SECTION-ACTIVE-CATEGORY-color);
+    color: var(--MENU-OPEN-FOLDER-color);
 }
 
 .menufolderclosed {
