@@ -161,6 +161,15 @@ s .bg {
      transition-duration: .1s;
      transition-delay: 0s;
 }
+
+ .close-menu-button {
+    font-size: 100px;
+}
+
+ .open-menu-button {
+    font-size: 25px;
+}
+
  #sidebar #header-wrapper {
      width: 300px;
      background: #999999;

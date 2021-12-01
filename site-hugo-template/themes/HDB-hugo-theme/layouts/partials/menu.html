@@ -7,7 +7,9 @@
     <div id="header">
     <div id="sidebar-toggle-span-2">
         <a href="#" id="sidebar-toggle-2" data-sidebar-toggle="">
-          <img src="/images/arrow-left.jpg" width="100px">
+          <i class="close-menu-button fas fa-angle-left"></i>
+          <i class="close-menu-button fas fa-angle-left"></i>
+          <i class="close-menu-button fas fa-angle-left"></i>
         </a>
     </div>
       {{ partial "logo.html" . }}
@@ -22,7 +24,7 @@
     <section id="homelinks">
       <ul>
         <li>
-            <a class="padding" href='{{ (cond (and (ne .Site.Params.landingPageURL nil) (.Site.IsMultiLingual)) .Site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne .Site.Params.landingPageName nil) (print   "<i class='fas fa-home'></i> " .Site.Params.landingPageName) "<i class='fas fa-home'></i> Home") }}</a>
+            <a class="padding" href='{{ (cond (and (ne .Site.Params.landingPageURL nil) (.Site.IsMultiLingual)) .Site.Params.landingPageURL "/") }}'>{{ safeHTML (cond (ne .Site.Params.landingPageName nil) (print   "<i class='fas fa-home'></i> " .Site.Params.landingPageName) "<i class='fas fa-home'></i>") }}</a>
         </li>
       </ul>
     </section>

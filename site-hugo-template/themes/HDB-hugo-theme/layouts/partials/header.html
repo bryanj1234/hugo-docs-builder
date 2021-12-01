@@ -53,11 +53,13 @@
                 <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
                     <span id="sidebar-toggle-span">
                         <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
-                          <i class="fas fa-bars"></i>
+                            <i class="open-menu-button fas fa-angle-left"></i>
+                            <i class="open-menu-button fas fa-angle-left"></i>
+                            <i class="open-menu-button fas fa-angle-left"></i>
                         </a>
                     </span>
                   {{ if $toc }}
-                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  <span id="toc-menu"><i class="open-menu-button fas fa-list-alt"></i></span>
                   {{ end }}
                   <span class="links">
                  {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
