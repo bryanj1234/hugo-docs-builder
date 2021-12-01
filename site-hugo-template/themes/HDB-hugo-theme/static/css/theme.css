@@ -70,7 +70,7 @@ s .bg {
      display: inline-block;
 }
  .searchbox {
-     margin-top: 1rem;
+     margin-top: .5rem;
      position: relative;
      border: 1px solid #999999;
      background: #999999;
@@ -167,7 +167,8 @@ s .bg {
      color: #fff;
      text-align: center;
      border-bottom: 4px solid #9c6fb6;
-     padding: .5rem;
+     padding-left: .5rem;
+     padding-bottom: .5rem;
 }
  #sidebar {
      position: fixed;
