@@ -164,6 +164,7 @@ s .bg {
 
  .close-menu-button {
     font-size: 100px;
+    padding-top: 3rem;
 }
 
  .open-menu-button {
@@ -1028,16 +1029,16 @@ s .bg {
 }
  @media only all and (max-width: 47.938em) {
      #sidebar  {
-         left: -430px;
+         left: -400px;
     }
      #sidebar_menu  {
-         width: 430px;
+         width: 400px;
     }
       #sidebar_menu:hover{
-         width: 430px;
+         width: 400px;
     }
      #sidebar #header-wrapper{
-         width: 430px;
+         width: 400px;
     }
      #body {
          margin-left: 0;
@@ -1210,7 +1211,7 @@ s .bg {
 }
  #sidebar-toggle-span-2 {
      padding-right: 0.5rem !important;
-     margin-right: 1rem !important;
+     margin-right: 0rem !important;
 }
 
  .btn {
