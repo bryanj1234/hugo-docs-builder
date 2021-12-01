@@ -181,6 +181,7 @@ a:hover {
 
 #homelinks {
   background: var(--MENU-HEADER-BG-color);
+  border-top: 1px solid var(--MENU-HEADER-BORDER-color);
   border-right: 1px solid var(--MENU-HEADER-BORDER-color);
 }
 
