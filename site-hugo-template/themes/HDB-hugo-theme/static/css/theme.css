@@ -147,10 +147,10 @@ s .bg {
      width: 1.8em;
 }
  #logo {
-     width: 265px;
+     width: 290px;
 }
  .searchbox {
-     width: 265px;
+     width: 290px;
 }
  #sidebar_menu {
      width: 300px;
@@ -167,7 +167,7 @@ s .bg {
      color: #fff;
      text-align: center;
      border-bottom: 4px solid #9c6fb6;
-     padding: 1rem;
+     padding: .5rem;
 }
  #sidebar {
      position: fixed;
@@ -1010,10 +1010,10 @@ s .bg {
          margin-left: 230px;
     }
      #logo {
-         width: 200px;
+         width: 220px;
     }
      .searchbox {
-         width: 200px;
+         width: 220px;
     }
 }
  @media only all and (max-width: 47.938em) {
@@ -1034,10 +1034,10 @@ s .bg {
          width: 100%;
     }
      #logo {
-         width: 200px;
+         width: 220px;
     }
      .searchbox {
-         width: 200px;
+         width: 220px;
     }
      .sidebar-hidden {
          overflow: hidden;
