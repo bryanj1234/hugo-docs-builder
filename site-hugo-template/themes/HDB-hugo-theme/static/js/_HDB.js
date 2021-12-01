@@ -142,16 +142,8 @@ jQuery(document).ready(function() {
         return false;
     });
 
-    query_selection_str = '[active_menu_item="yes"]'
-    cur_page_menu_element = document.querySelector(query_selection_str);
-    if(cur_page_menu_element) {
-        cur_page_menu_element.scrollIntoView();
-    }
-
     $('#sidebar .highlightable').perfectScrollbar();
     setMenuHeight();
-
-
 
     function toggleSidebarVisibilityStatus() {
         // Toggle visibility of side bar.
@@ -177,6 +169,12 @@ jQuery(document).ready(function() {
     jQuery('[data-sidebar-toggle]').on('click', function() {
         return toggleSidebarVisibilityStatus();
     });
+
+    query_selection_str = '[active_menu_item="yes"]'
+    cur_page_menu_element = document.querySelector(query_selection_str);
+    if(cur_page_menu_element) {
+        cur_page_menu_element.scrollIntoView();
+    }
 
     jQuery('[data-clear-history-toggle]').on('click', function() {
         sessionStorage.clear();
