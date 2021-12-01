@@ -163,7 +163,13 @@
           {{if .Params.alwaysopen}}parent{{end}}"
         active_menu_item="{{$active_menu_item}}"
       >
+
       <a href="{{.RelPermalink}}">
+          {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
+            <i class="menufolderopen fas fa-folder-open"></i>
+          {{else}}
+            <i class="menufolderclosed fas fa-folder"></i>
+          {{end}}
           {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
           {{ if $showvisitedlinks}}
             <i class="fas fa-check read-icon"></i>
@@ -217,6 +223,11 @@
     {{ if not .Params.Hidden }}
       <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item {{if eq .File.UniqueID $currentFileUniqueID}}active{{end}}">
         <a href="{{ .RelPermalink}}">
+          {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
+            <i class="menufolderopen fas fa-folder-open"></i>
+          {{else}}
+            <i class="menufolderclosed fas fa-folder"></i>
+          {{end}}
         {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
         {{ if $showvisitedlinks}}<i class="fas fa-check read-icon"></i>{{end}}
         </a>
