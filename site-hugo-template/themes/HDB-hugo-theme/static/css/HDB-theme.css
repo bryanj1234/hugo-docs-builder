@@ -24,13 +24,13 @@
     --MENU-SEARCH-BOX-ICONS-color: #666666; /* Override search field icons color */
 
     --MENU-SECTIONS-ACTIVE-BG-color:#ffffff; /* Background color of the active section and its childs */
-    --MENU-SECTIONS-BG-color:#eeeeee; /* Background color of other sections */ /* e4f5ff */
+    --MENU-SECTIONS-BG-color:#f2f2f4; /* Background color of other sections */ /* e4f5ff */
     --MENU-SECTIONS-LINK-color: #4477aa; /* Color of links in menu */
     --MENU-SECTIONS-LINK-HOVER-color: #000000;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-HOVER-CATEGORY-BG-color: #efefef;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-HOVER-CATEGORY-BG-color: #eeeef0;  /* Color of links in menu, when hovered */
 
     --MENU-SECTION-ACTIVE-CATEGORY-color: #4477aa; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #efefef; /* Color of background for the active category (only) */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #efeff1; /* Color of background for the active category (only) */
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
     --MENU-SECTION-HR-color: #0000FF; /* Color of <hr> separator in menu */
@@ -95,7 +95,7 @@ a {
 }
 
 .static_file_link, .static_file_link:hover {
-    color: var(--STATIC-FILE-LINK-color);
+    color: var(--STATIC-FILE-LINK-color) !important;
 }
 
 
@@ -104,7 +104,7 @@ a {
 }
 
 a:hover {
-    color: var(--MAIN-LINK-HOVER-color);
+    color: var(--MAIN-LINK-HOVER-color) !important;
 }
 
 #sidebar ul li.visited > a .read-icon {
@@ -135,6 +135,12 @@ a:hover {
     text-align: left;
 }
 
+#sidebar_menu ul ul li {
+    font-family: monospace;
+    font-size: 15px;
+    font-weight: 200;
+}
+
 #sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
     background: var(--MENU-SECTIONS-ACTIVE-BG-color);
 }
@@ -151,7 +157,7 @@ a:hover {
 }
 
 #sidebar a:hover, #sidebar a.static_file_link:hover {
-    color: var(--MENU-SECTIONS-LINK-HOVER-color);
+    /*color: var(--MENU-SECTIONS-LINK-HOVER-color);*/
 }
 
 #sidebar ul li.active > a {

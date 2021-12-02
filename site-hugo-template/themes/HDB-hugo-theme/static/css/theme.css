@@ -324,7 +324,6 @@ s .bg {
 }
  #sidebar ul li.active > a {
      background: #fff;
-     color: #777 !important;
 }
  #sidebar ul li {
      padding: 0;
