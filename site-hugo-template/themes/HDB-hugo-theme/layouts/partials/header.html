@@ -50,36 +50,32 @@
               <!-- Always add top bar, since need it on the home page for mobile navigation... -->
               <div>
                 <div id="top-bar">
-                {{$toc := (and (not .Params.disableToc) (not .Params.chapter))}}
                 <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
-                    <span id="sidebar-toggle-span">
-                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
-                            <i class="open-menu-button fas fa-arrow-circle-left"></i>
-                        </a>
-                    </span>
+                  <span id="sidebar-toggle-span">
+                    <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                      <i class="open-menu-button fas fa-bars"></i>
+                    </a>
+                  </span>
+                  {{$toc := (and (not .Params.disableToc) (not .Params.chapter))}}
                   {{ if $toc }}
-                  <span id="toc-menu"><i class="open-menu-button fas fa-list-alt"></i></span>
+                    {{ partial "toc.html" . }}
                   {{ end }}
                   <span class="links">
-                 {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
-
-                  {{$use_title := .Title}}
-                  {{if isset .Params "title_breadcrumbs" }}
-                    {{$use_title = (.Params.title_breadcrumbs) }}
-                  {{end}}
-
-                  {{if not .IsHome}}
+                    {{$showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb))}}
                     {{if $showBreadcrumb}}
-                      {{ template "breadcrumb" dict "page" . "value" $use_title }}
+                        {{$use_title := .Title}}
+                        {{if isset .Params "title_breadcrumbs" }}
+                            {{$use_title = (.Params.title_breadcrumbs) }}
+                        {{else if .IsHome}}
+                            {{$use_title = "<i class=\"breadcrumbs fas fa-home\"></i>" }}
+                        {{end}}
+                        {{$cur_link := (printf "<a class=\"breadcrumbs\" href='%s'>%s</a>" .RelPermalink $use_title) }}
+                        {{ template "breadcrumb" dict "page" . "value" $cur_link }}
                     {{ else }}
-                      {{ $use_title}}
+                        {{ $use_title}}
                     {{ end }}
-                  {{end}}
                   </span>
                 </div>
-                {{ if $toc }}
-                    {{ partial "toc.html" . }}
-                {{ end }}
               </div>
             </div>
 
@@ -98,20 +94,23 @@
           </h1>
         {{end}}
         <div id="body-inner">
-        {{define "breadcrumb"}}
-          {{$parent := .page.Parent }}
-          {{ if $parent }}
 
-            {{$use_title := $parent.Title}}
-            {{if isset $parent.Params "title_breadcrumbs" }}
-              {{$use_title = ($parent.Params.title_breadcrumbs) }}
-            {{else if .page.Parent.IsHome}}
-              {{$use_title = "<i class=\"fas fa-home\"></i>" }}
-            {{end}}
 
-            {{ $value := (printf "<a href='%s'>%s</a> <i class=\"fas fa-angle-right\"></i> %s" $parent.RelPermalink $use_title .value) }}
-            {{ template "breadcrumb" dict "page" $parent "value" $value }}
-          {{else}}
-            {{.value|safeHTML}}
-          {{end}}
-        {{end}}
+<!-- Breadcrumbs template -->
+{{define "breadcrumb"}}
+  {{$parent := .page.Parent }}
+  {{ if $parent }}
+
+    {{$use_title := $parent.Title}}
+    {{if isset $parent.Params "title_breadcrumbs" }}
+      {{$use_title = ($parent.Params.title_breadcrumbs) }}
+    {{else if .page.Parent.IsHome}}
+      {{$use_title = "<i class=\"breadcrumbs fas fa-home\"></i>" }}
+    {{end}}
+
+    {{ $value := (printf "<a class=\"breadcrumbs\" href='%s'>%s</a> <i class=\"fas fa-angle-right\"></i> %s" $parent.RelPermalink $use_title .value) }}
+    {{ template "breadcrumb" dict "page" $parent "value" $value }}
+  {{else}}
+    {{.value|safeHTML}}
+  {{end}}
+{{end}}

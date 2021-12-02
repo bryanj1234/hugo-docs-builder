@@ -1,5 +1,13 @@
-<div class="progress">
-    <div class="wrapper">
-{{ .TableOfContents }}
+{{$my_toc := .TableOfContents }}
+{{$toc_empty := "toc_empty"}}
+{{ if and (ne $my_toc "<nav id=\"TableOfContents\"></nav>") (ne $my_toc "")}}
+    {{$toc_empty = ""}}
+{{end}}
+<span id="toc-menu"><i class="{{$toc_empty}} open-menu-button fas fa-list-alt"></i></span>
+{{ if and (ne $my_toc "<nav id=\"TableOfContents\"></nav>") (ne $my_toc "")}}
+    <div class="progress">
+        <div class="wrapper">
+        {{ $my_toc }}
+        </div>
     </div>
-</div>
+{{end}}

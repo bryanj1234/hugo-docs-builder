@@ -11,6 +11,8 @@
     --MAIN-LINK-HOVER-color:#4477aa; /* Color of hovered links */
     --MAIN-ANCHOR-color: #4477aa; /* color of anchors on titles */
 
+    --DISABLED-LINK-color: #777777;
+
     --MENU-MAIN-BG-color:#ffffff;
 
     --MENU-HOME-LINK-color: #4477aa; /* Color of the home button text */
@@ -220,4 +222,16 @@ li.active > a > .menufolderopen {
 
 .close-menu-button {
     color: var(--MAIN-LINK-color);
+}
+
+#toc-menu {
+    color: var(--MAIN-LINK-color);
+}
+
+#toc-menu .toc_empty {
+    color: var(--DISABLED-LINK-color);
+}
+
+.breadcrumbs {
+    font-size: 1.2rem;
 }
