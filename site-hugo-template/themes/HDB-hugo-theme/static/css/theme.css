@@ -135,10 +135,11 @@ s .bg {
 }
 
  .ps-container >.ps-scrollbar-y-rail {
-     width: 2em;
+     width: 1.8em;
 }
  .ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container:hover > .ps-scrollbar-y-rail > .ps-scrollbar-y, .ps-container.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y , .ps-container:hover.ps-in-scrolling.ps-y > .ps-scrollbar-y-rail > .ps-scrollbar-y {
      width: 1.8em;
+     right:  0px;
 }
 
 .ps-container.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail {
@@ -315,9 +316,6 @@ s .bg {
 }
  #sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
      background: #251f29;
-}
- #sidebar ul li.active {
-     background: #fff;
 }
  #sidebar ul li {
      padding: 0;
