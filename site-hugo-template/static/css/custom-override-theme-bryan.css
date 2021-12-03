@@ -13,11 +13,17 @@
 
     --DISABLED-LINK-color: #bbbbbb;
 
-    --TOP-BAR-BG-color: #f2f2f4; /*f2f2f4*/
+    --TOP-BAR-BG-color: #ffe7da; /*f2f2f4*/ /*e0e7ef*/ /* #6ea1d5 */
+    --TOP-BAR-BG-color-2: #edf1ff;
 
     --MENU-MAIN-BG-color:#ffffff;
-    --MENU-ITEM-BG-color:#e0e7ef;
-    --MENU-ITEM-ACTIVE-BG-color:#e0e7ef;
+    --MENU-ALT-BG-color: #ffbe9b;
+
+    --MENU-ITEM-BG-color:#57a7e5;       /* e0e7ef */
+    --MENU-ITEM-ACTIVE-BG-color:#3ca65d;    /* e0e7ef */
+
+    --MENU-ITEM-TEXT-color:#ffffff;
+    --MENU-ITEM-TEXT-DIM-color: #dddddd;
 
     --MENU-HOME-LINK-color: #4477aa; /* Color of the home button text */
     --MENU-HOME-LINK-HOVER-color: #ffffff; /* Color of the hovered home button text */
@@ -60,7 +66,7 @@
 }
 
  #sidebar_menu {
-     width: 400px;
+     width: 350px;
 }
 
  #sidebar_menu:hover {
@@ -69,7 +75,7 @@
 
  #body {
      position: relative;
-     margin-left: 400px;
+     margin-left: 350px;
      min-height: 100%;
 }
 
@@ -224,11 +230,26 @@ a:hover {
 }
 
 #top-bar {
-    background: var(--TOP-BAR-BG-color);
+    /* background: var(--TOP-BAR-BG-color); */
+    background-image: linear-gradient(to left, var(--TOP-BAR-BG-color-2) , var(--TOP-BAR-BG-color));
     border-radius: 0em 0em 0em 2em;
     padding: .5rem 1.5rem;
     height: 2.5rem;
     min-height: 2.5rem;
+}
+
+#top-bar .links {
+    background: var(--TOP-BAR-BG-color);
+    color: var(--MAIN-LINK-color);
+    border-radius: 0em 0em 0em 2em;
+    padding: .5rem 1.5rem;
+    height: 2.5rem;
+    min-height: 2.5rem;
+    font-size: 16px;
+}
+
+#top-bar .links a {
+    color: var(--MAIN-LINK-color);
 }
 
 #sidebar #header-wrapper {
@@ -246,10 +267,11 @@ a:hover {
 }
 
 #sidebar_menu {
-    background-color: var(--MENU-MAIN-BG-color);
+    background-color: var(--MENU-ALT-BG-color);
+    /* background-image: linear-gradient(to right, var(--TOP-BAR-BG-color-2) , var(--TOP-BAR-BG-color)); */
     color: var(--MENU-SEARCH-BOX-color);
-    /* border-right: 1px solid var(--MENU-HEADER-BORDER-color); */
-    /* border-top: 1px solid var(--MENU-HEADER-BORDER-color); */
+/*     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
+    border-top: 1px solid var(--MENU-HEADER-BORDER-color); */
     border-radius: 0em 1em 0em 0em;
     padding-top: .6rem;
     text-align: left;
@@ -274,7 +296,7 @@ a:hover {
 
 #sidebar ul.topics > li {
     background:  var(--MENU-ITEM-BG-color);
-    border: 1px solid var(--MENU-ITEM-BG-color);
+    border: 0px solid var(--MENU-ITEM-BG-color);
     border-radius: 0em 1em 1em 1em;
     margin-top: .5em;
     margin-bottom: .5em;
@@ -288,16 +310,31 @@ a:hover {
 
 #sidebar ul.topics > li.parent  {
     background:  var(--MENU-ITEM-ACTIVE-BG-color);
-    border: 1px solid var(--MENU-ITEM-BG-color);
+    border: 0px solid var(--MENU-ITEM-ACTIVE-BG-color);
 }
 
 #sidebar ul.topics > li.active {
     background:  var(--MENU-ITEM-ACTIVE-BG-color);
-    border: 1px solid var(--MENU-ITEM-BG-color);
+    border: 0px solid var(--MENU-ITEM-ACTIVE-BG-color);
 }
 
-#sidebar ul.topics > li.active > a {
+#sidebar ul.topics > li > a {
+    color:  var(--MENU-ITEM-TEXT-color);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#sidebar ul.topics > li.active > a, #sidebar ul.topics > li > a:hover {
     background: var(--MENU-ITEM-ACTIVE-BG-color);
+    color:  var(--MENU-ITEM-TEXT-color) !important;
+}
+
+#sidebar ul.topics > li > a > .menufolderopen {
+    color:  var(--MENU-ITEM-TEXT-color);
+}
+
+#sidebar ul.topics > li > a > .menufolderclosed {
+    color:  var(--MENU-ITEM-TEXT-DIM-color);
 }
 
 #sidebar ul.topics > li ul {
@@ -317,6 +354,10 @@ a:hover {
 
 #sidebar ul.topics > li.active > ul {
     background:  var(--MENU-MAIN-BG-color);
+}
+
+#sidebar ul.topics > li > a {
+    padding-left: 1em !important;
 }
 
 #sidebar ul.topics > li a {
@@ -386,12 +427,13 @@ video.center {
   margin-top: 5rem;
 }
 
+#sidebar-toggle {
+    color: var(--MAIN-LINK-color);
+}
+
 .menufolderopen {
     color: var(--MENU-OPEN-FOLDER-color);
     font-size: 1.3em;
-}
-li.active > a > .menufolderopen {
-    color: var(--MENU-OPEN-FOLDER-color);
 }
 
 .menufolderclosed {
@@ -414,3 +456,9 @@ li.active > a > .menufolderopen {
     font-size: 1.2rem;
 }
 
+.progress {
+    background-color: var(--MENU-MAIN-BG-color);
+    color: var(--MAIN-LINK-color);
+    border: thin solid #ECECEC;
+    z-index: 200;
+}
