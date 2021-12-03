@@ -179,7 +179,6 @@ s .bg {
 }
  #sidebar_menu {
      width: 350px;
-     min-height: 100%;
 }
  #sidebar_menu:hover {
      width: 700px;

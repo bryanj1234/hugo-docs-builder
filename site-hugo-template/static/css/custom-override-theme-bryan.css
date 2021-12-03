@@ -152,7 +152,7 @@
          width: 220px;
     }
      .sidebar-hidden #body {
-         margin-left: 300px;
+         margin-left: 400px;
     }
      .sidebar-hidden #overlay {
          position: absolute;
@@ -272,7 +272,7 @@ a:hover {
     color: var(--MENU-SEARCH-BOX-color);
 /*     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
     border-top: 1px solid var(--MENU-HEADER-BORDER-color); */
-    border-radius: 0em 1em 0em 0em;
+    border-radius: 0em 1em 1em 0em;
     padding-top: .6rem;
     text-align: left;
 }
