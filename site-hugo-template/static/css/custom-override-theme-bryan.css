@@ -19,23 +19,23 @@
     --MENU-HOME-LINK-HOVER-color: #ffffff; /* Color of the hovered home button text */
 
     --MENU-HEADER-BG-color:#ffffff; /* Background color of menu header */ /*fecbb8, f6f8fa, ff7a4b */
-    --MENU-HEADER-BORDER-color:#aaaaaa; /*Color of menu header border */
+    --MENU-HEADER-BORDER-color:#dddddd; /*Color of menu header border */
 
     --MENU-SEARCH-BG-color:#FFFFFF; /* Search field background color (by default borders + icons) */
     --MENU-SEARCH-BOX-color: #FFFFFF; /* Override search field border color */
     --MENU-SEARCH-BOX-ICONS-color: #666666; /* Override search field icons color */
 
     --MENU-SECTIONS-ACTIVE-BG-color:#ffffff; /* Background color of the active section and its childs */
-    --MENU-SECTIONS-BG-color:#f2f2f4; /* Background color of other sections */ /* e4f5ff */
+    --MENU-SECTIONS-BG-color:#ffffff; /* Background color of other sections */ /* f2f2f4 */
     --MENU-SECTIONS-LINK-color: #4477aa; /* Color of links in menu */
     --MENU-SECTIONS-LINK-HOVER-color: #000000;  /* Color of links in menu, when hovered */
-    --MENU-SECTION-HOVER-CATEGORY-BG-color: #eeeef0;  /* Color of links in menu, when hovered */
+    --MENU-SECTION-HOVER-CATEGORY-BG-color: #f2f2f4;  /* Color of links in menu, when hovered */
 
     --MENU-SECTION-ACTIVE-CATEGORY-color: #4477aa; /* Color of active category text */
-    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #efeff1; /* Color of background for the active category (only) */
+    --MENU-SECTION-ACTIVE-CATEGORY-BG-color: #f2f2f4; /* Color of background for the active category (only) */
 
     --MENU-VISITED-color: #33a1ff; /* Color of 'page visited' icons in menu */
-    --MENU-SECTION-HR-color: #0000FF; /* Color of <hr> separator in menu */
+    --MENU-SECTION-HR-color: #000000; /* Color of <hr> separator in menu */
 
     --STATIC-FILE-LINK-color:#555555;
 
@@ -121,6 +121,9 @@ a:hover {
     background-color: var(--MENU-HEADER-BG-color);
     color: var(--MENU-SEARCH-BOX-color);
     text-align: left;
+    border-top: 0px solid var(--MENU-HEADER-BORDER-color);
+    border-bottom: 0px solid var(--MENU-HEADER-BORDER-color);
+    border-left: 1px solid var(--MENU-HEADER-BORDER-color);
     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
 }
 
@@ -143,11 +146,24 @@ a:hover {
     font-weight: 200;
 }
 
-#sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
-    background: var(--MENU-SECTIONS-ACTIVE-BG-color);
-}
 #sidebar .searchbox * {
     color: var(--MENU-SEARCH-BOX-ICONS-color);
+}
+
+#sidebar ul.topics > li {
+    background:  var(--MENU-MAIN-BG-color);
+}
+
+#sidebar ul.topics > li.parent {
+    background:  var(--MENU-MAIN-BG-color);
+}
+
+#sidebar ul.topics > li.active {
+    background:  var(--MENU-MAIN-BG-color);
+}
+
+#sidebar ul.topics > li > ul {
+    background:  var(--MENU-MAIN-BG-color);
 }
 
 #sidebar a {
@@ -160,11 +176,6 @@ a:hover {
 
 #sidebar a:hover, #sidebar a.static_file_link:hover {
     /*color: var(--MENU-SECTIONS-LINK-HOVER-color);*/
-}
-
-#sidebar ul li.active > a {
-    background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
-    /*color: var(--MENU-SECTION-ACTIVE-CATEGORY-color) !important;*/
 }
 
 #sidebar ul li > a:hover{
@@ -190,6 +201,8 @@ a:hover {
 #homelinks {
   background: var(--MENU-HEADER-BG-color);
   border-top: 1px solid var(--MENU-HEADER-BORDER-color);
+  border-bottom: 1px solid var(--MENU-HEADER-BORDER-color);
+  border-left: 1px solid var(--MENU-HEADER-BORDER-color);
   border-right: 1px solid var(--MENU-HEADER-BORDER-color);
 }
 

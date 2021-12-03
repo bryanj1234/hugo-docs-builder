@@ -317,12 +317,9 @@ s .bg {
 }
  #sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
      background: #251f29;
-     margin-left: -1rem;
-     margin-right: -1rem;
-     padding-left: 1rem;
      padding-right: 0rem;
 }
- #sidebar ul li.active > a {
+ #sidebar ul li.active {
      background: #fff;
 }
  #sidebar ul li {

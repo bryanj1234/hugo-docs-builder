@@ -29,7 +29,7 @@ theme = "HDB-hugo-theme"
 
   # If set to false, a Home button will appear below the search bar on the menu.
   # It is redirecting to the landing page of the current language if specified. (Default is "/")
-  disableLandingPageButton = false
+  disableLandingPageButton = true
 
   # Disable search function. It will hide search bar
   disableSearch = false
