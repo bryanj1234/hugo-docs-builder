@@ -13,7 +13,10 @@
 
     --DISABLED-LINK-color: #bbbbbb;
 
-    --MENU-MAIN-BG-color:#ffffff;
+    --TOP-BAR-BG-color: #f2f2f4;
+
+    --MENU-MAIN-BG-color:#f2f2f4;
+    --MENU-ITEM-BG-color:#ffffff;
 
     --MENU-HOME-LINK-color: #4477aa; /* Color of the home button text */
     --MENU-HOME-LINK-HOVER-color: #ffffff; /* Color of the hovered home button text */
@@ -43,16 +46,118 @@
     --MENU-CLOSED-FOLDER-color: #4477aa;
 }
 
-body {
-    color: var(--MAIN-TEXT-color) !important;
+/* ############################################################################################################### */
+
+ #logo {
+     width: 270px;
+}
+ .searchbox {
+     width: 333px;
+}
+ #sidebar #header-wrapper {
+     width: 350px;
 }
 
-#top-bar {
-    background: var(--MENU-SECTIONS-BG-color);
-    border-radius: 2px;
-    padding: .5rem 1rem;
-    height: 2.5rem;
-    min-height: 2.5rem;
+ #sidebar_menu {
+     width: 400px;
+}
+
+ #sidebar_menu:hover {
+     width: 900px;
+}
+
+ #body {
+     position: relative;
+     margin-left: 400px;
+     min-height: 100%;
+}
+
+#body_title {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+ #body-inner {
+    margin-top: 2rem;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+ @media only all and (max-width: 59.938em) {
+
+     #sidebar #header-wrapper {
+         width: 230px;
+    }
+     #sidebar_menu {
+         width: 230px;
+    }
+     #sidebar_menu:hover {
+         width: 700px;
+    }
+     #body {
+         margin-left: 230px;
+    }
+     #logo {
+         width: 220px;
+    }
+     .searchbox {
+         width: 215px;
+    }
+    #body_title {
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+     #body-inner {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+ @media only all and (max-width: 47.938em) {
+
+     #sidebar  {
+         left: -400px;
+    }
+     #sidebar #header-wrapper{
+         width: 400px;
+    }
+     #sidebar_menu  {
+         width: 400px;
+    }
+      #sidebar_menu:hover{
+         width: 400px;
+    }
+     #body {
+         margin-left: 0;
+         width: 100%;
+    }
+    #body_title {
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+     #body-inner {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+     #logo {
+         width: 220px;
+    }
+     .searchbox {
+         width: 220px;
+    }
+     .sidebar-hidden #body {
+         margin-left: 300px;
+    }
+     .sidebar-hidden #overlay {
+         position: absolute;
+         background: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* ############################################################################################################### */
+
+
+body {
+    color: var(--MAIN-TEXT-color) !important;
 }
 
 h1 {
@@ -117,27 +222,43 @@ a:hover {
     background-color: var(--MAIN-LINK-HOVER-color);
 }
 
+#top-bar {
+    background: var(--TOP-BAR-BG-color);
+    border-radius: 0em 0em 0em 2em;
+    padding: .5rem 1.5rem;
+    height: 2.5rem;
+    min-height: 2.5rem;
+}
+
 #sidebar #header-wrapper {
     background-color: var(--MENU-HEADER-BG-color);
+    border-radius: 0em 0em 2em 0em;
     color: var(--MENU-SEARCH-BOX-color);
     text-align: left;
     border-top: 0px solid var(--MENU-HEADER-BORDER-color);
     border-bottom: 0px solid var(--MENU-HEADER-BORDER-color);
-    border-left: 1px solid var(--MENU-HEADER-BORDER-color);
-    border-right: 1px solid var(--MENU-HEADER-BORDER-color);
+    border-left: 0px solid var(--MENU-HEADER-BORDER-color);
+    border-right: 0px solid var(--MENU-HEADER-BORDER-color);
+    padding-left: .5rem;
+    padding-right: .5rem;
+    padding-bottom: 1rem;
+}
+
+#sidebar_menu {
+    background-color: var(--MENU-MAIN-BG-color);
+    color: var(--MENU-SEARCH-BOX-color);
+    /* border-right: 1px solid var(--MENU-HEADER-BORDER-color); */
+    /* border-top: 1px solid var(--MENU-HEADER-BORDER-color); */
+    border-radius: 0em 2em 0em 0em;
+    padding-top: .6rem;
+    text-align: left;
 }
 
 .searchbox {
     background: var(--MENU-SEARCH-BG-color);
     border: 1px solid;
-    border-color: var(--MENU-SECTIONS-BG-color);
-}
-
-#sidebar .highlightable {
-    background-color: var(--MENU-SECTIONS-BG-color);
-    color: var(--MENU-SEARCH-BOX-color);
-    border-right: 1px solid var(--MENU-HEADER-BORDER-color);
-    text-align: left;
+    border-color: var(--MENU-HEADER-BORDER-color);
+    border-radius: .5em;
 }
 
 #sidebar_menu ul ul li {
@@ -151,19 +272,41 @@ a:hover {
 }
 
 #sidebar ul.topics > li {
-    background:  var(--MENU-MAIN-BG-color);
+    background:  var(--MENU-ITEM-BG-color);
+    border: 1px solid var(--MENU-HEADER-BORDER-color);
+    border-radius: 0em 2em 2em 2em;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    margin-left: .5em;
+    margin-right: .5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#sidebar ul.topics > li ul {
+    margin-right: .5em;
+}
+
+#sidebar ul.topics > li a {
+    overflow:  hidden;
+    text-overflow: ellipsis;
+    padding-left: .3em;
+    padding-right:.3em;
+    border-radius: 0em 2em 2em 2em;
 }
 
 #sidebar ul.topics > li.parent {
-    background:  var(--MENU-MAIN-BG-color);
+    background:  var(--MENU-ITEM-BG-color);
 }
 
 #sidebar ul.topics > li.active {
-    background:  var(--MENU-MAIN-BG-color);
+    background:  var(--MENU-ITEM-BG-color);
 }
 
 #sidebar ul.topics > li > ul {
-    background:  var(--MENU-MAIN-BG-color);
+    background:  var(--MENU-ITEM-BG-color);
 }
 
 #sidebar a {
@@ -174,8 +317,8 @@ a:hover {
     white-space: nowrap
 }
 
-#sidebar a:hover, #sidebar a.static_file_link:hover {
-    /*color: var(--MENU-SECTIONS-LINK-HOVER-color);*/
+#sidebar ul li.active > a{
+    background: var(--MENU-SECTION-ACTIVE-CATEGORY-BG-color);
 }
 
 #sidebar ul li > a:hover{
@@ -201,7 +344,7 @@ a:hover {
 #homelinks {
   background: var(--MENU-HEADER-BG-color);
   border-top: 1px solid var(--MENU-HEADER-BORDER-color);
-  border-bottom: 1px solid var(--MENU-HEADER-BORDER-color);
+  border-bottom: 0px solid var(--MENU-HEADER-BORDER-color);
   border-left: 1px solid var(--MENU-HEADER-BORDER-color);
   border-right: 1px solid var(--MENU-HEADER-BORDER-color);
 }
@@ -248,3 +391,4 @@ li.active > a > .menufolderopen {
 .breadcrumbs {
     font-size: 1.2rem;
 }
+

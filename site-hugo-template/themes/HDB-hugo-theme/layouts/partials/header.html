@@ -85,6 +85,7 @@
         {{ if .Params.chapter }}
           <div id="chapter">
         {{ end }}
+
         {{if and (not .IsHome) (not .Params.chapter) }}
           <h1 id="body_title">
             {{ if or (eq .Kind "taxonomy") (eq .Kind "term") }}
@@ -93,8 +94,8 @@
             {{.Title}}
           </h1>
         {{end}}
-        <div id="body-inner">
 
+        <div id="body-inner">
 
 <!-- Breadcrumbs template -->
 {{define "breadcrumb"}}

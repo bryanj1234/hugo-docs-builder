@@ -178,6 +178,7 @@ s .bg {
 }
  #sidebar_menu {
      width: 350px;
+     min-height: 100%;
 }
  #sidebar_menu:hover {
      width: 700px;
@@ -200,9 +201,6 @@ s .bg {
      background: #999999;
      color: #fff;
      text-align: center;
-     border-bottom: 4px solid #eeeeee;
-     padding-left: .5rem;
-     padding-bottom: .5rem;
 }
  #sidebar {
      position: fixed;
@@ -283,7 +281,7 @@ s .bg {
      color: white;
 }
  #sidebar ul.topics {
-     margin: 0 1rem;
+     margin: 0 0rem;
 }
  #sidebar ul.topics.searched ul {
      display: block;
@@ -317,7 +315,6 @@ s .bg {
 }
  #sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
      background: #251f29;
-     padding-right: 0rem;
 }
  #sidebar ul li.active {
      background: #fff;
@@ -476,7 +473,7 @@ s .bg {
      font-size: 1.2rem;
 }
  #footer {
-     padding: 3rem 1rem;
+     padding: 0rem 0rem;
      color: #000000;
      font-size: 13px;
 }
