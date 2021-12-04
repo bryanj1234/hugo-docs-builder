@@ -24,6 +24,8 @@
     * {{.Params.source_file_ext}}
     -->
 
+    <span class = "line-numbers">
+
     {{if eq .Params.source_file_ext "HTML"}}
 
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
@@ -59,6 +61,11 @@
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
         <pre><code class="">{{$file_contents}}</code></pre>
 
+    {{else if eq .Params.source_file_ext "TEX"}}
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre><code class="tex">{{$file_contents}}</code></pre>
+
     {{else if eq .Params.source_file_ext "JPG"}}
 
         <img src = "{{.Params.source_file_full_name}}">
@@ -77,7 +84,7 @@
     {{end}}
 
 
-
+    </span>
 
     {{ end }}
 {{ end }}
