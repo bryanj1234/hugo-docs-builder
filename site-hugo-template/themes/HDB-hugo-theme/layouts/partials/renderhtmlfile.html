@@ -5,6 +5,8 @@
 {{ partial "footer.html" . }}
 
 
+
+
 <!------------------------------------------------------------------>
 
 
@@ -14,7 +16,12 @@
 {{ define "render-html-file" }}
     {{with .context}}
 
-    <iframe src="{{.Params.source_file_full_name}}" frameborder="0"></iframe>
+    <script>
+      function resizeIframe(obj) {
+        obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+      }
+    </script>
+    <iframe id="show_html_iframe" src="{{.Params.source_file_full_name}}" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
 
     {{end}}
 {{end}}

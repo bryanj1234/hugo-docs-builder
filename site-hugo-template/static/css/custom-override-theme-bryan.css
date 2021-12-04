@@ -1,4 +1,4 @@
-
+/* /*
 :root{
 
     --MAIN-TEXT-color:#323232; /* Color of text by default */
@@ -66,7 +66,7 @@
 }
 
  #sidebar_menu {
-     width: 350px;
+     width: 400px;
 }
 
  #sidebar_menu:hover {
@@ -75,7 +75,7 @@
 
  #body {
      position: relative;
-     margin-left: 350px;
+     margin-left: 400px;
      min-height: 100%;
 }
 
@@ -440,11 +440,9 @@ video.center {
   margin-top: 5rem;
 }
 
-iframe {
-    display: block;       /* iframes are inline by default */
-    background: #000;
-    border: none;         /* Reset default border */
-    height: 85vh;        /* Viewport-relative units */
+#show_html_iframe {
+    display: block;
+    border: none;
     width: 100%;
 }
 
@@ -482,4 +480,4 @@ iframe {
     color: var(--MAIN-LINK-color);
     border: thin solid #ECECEC;
     z-index: 200;
-}
+} */ */
