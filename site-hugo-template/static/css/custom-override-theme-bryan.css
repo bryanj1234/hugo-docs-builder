@@ -90,6 +90,10 @@
     margin-right: 10%;
 }
 
+ #breadcrumbs .links {
+     display: inline;
+}
+
  @media only all and (max-width: 59.938em) {
 
      #sidebar #header-wrapper {
@@ -117,6 +121,9 @@
      #body-inner {
         margin-left: 2%;
         margin-right: 2%;
+    }
+     #breadcrumbs .links {
+         display: inline;
     }
 }
  @media only all and (max-width: 47.938em) {
@@ -157,6 +164,9 @@
      .sidebar-hidden #overlay {
          position: absolute;
          background: rgba(0, 0, 0, 0.7);
+    }
+     #breadcrumbs .links {
+         display: inline;
     }
 }
 
@@ -238,8 +248,11 @@ a:hover {
     min-height: 2.5rem;
 }
 
+#top-bar #breadcrumbs {
+    width:  100%;
+}
+
 #top-bar .links {
-    background: var(--TOP-BAR-BG-color);
     color: var(--MAIN-LINK-color);
     border-radius: 0em 0em 0em 2em;
     padding: .5rem 1.5rem;
