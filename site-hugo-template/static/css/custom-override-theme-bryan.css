@@ -440,6 +440,14 @@ video.center {
   margin-top: 5rem;
 }
 
+iframe {
+    display: block;       /* iframes are inline by default */
+    background: #000;
+    border: none;         /* Reset default border */
+    height: 85vh;        /* Viewport-relative units */
+    width: 100%;
+}
+
 #sidebar-toggle {
     color: var(--MAIN-LINK-color);
 }

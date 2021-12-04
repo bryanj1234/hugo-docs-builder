@@ -220,9 +220,17 @@ def make_new_file(new_file_info):
             with open(source_file_abs_path_str, 'r') as f:
                 post = frontmatter.loads(f.read())
                 f.close()
+
                 if not 'title' in post:
                     exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
                     raise Exception(exception_str)
+
+                # Determine if we need to add extra info for rendering html AS HTML instead of as a source file...
+                if 'render_html_file' in post:
+                    source_file_rel_dir_str = pathlib.Path(source_file_rel_path_str).parent
+                    post['source_file_full_name'] = os.path.join('/', publish_static_source_dir_str, source_file_rel_dir_str, post['render_html_file'])
+
+
                 index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
@@ -242,7 +250,7 @@ def make_new_file(new_file_info):
             # Copy file
             shutil.copyfile(source_file_abs_path_str, source_file_path_str)
 
-            # Wrap upo the file to put into the content directory
+            # Wrap up the file to put into the content directory
             wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, '__WRAP__' + file_name + ".md")
 
             with open(wrapper_md_file_path_str, 'w') as the_file:
