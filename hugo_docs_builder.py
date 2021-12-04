@@ -160,10 +160,10 @@ def recursively_print_and_flatten_dir_contents(current_dir, cur_flat_list, sourc
 
     return cur_flat_list
 
-def make_dir_if_necessary(content_dir_abs_path_str):
+def make_dir_if_necessary(dir_abs_path_str):
 
     # Make new directory, with parents, if necessary.
-    pathlib.Path(content_dir_abs_path_str).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(dir_abs_path_str).mkdir(parents=True, exist_ok=True)
 
 
 def make_new_file(new_file_info):
@@ -284,6 +284,8 @@ def get_entry_point_info(source_file_abs_path_str):
             else:
                 exception_str = '_SITE_BUILDER file ' + source_file_abs_path_str + ' needs title.'
                 raise Exception(exception_str)
+            if 'top_level_category_override' in post:
+                entry_point_info['top_level_category_override'] = post['top_level_category_override']
 
     return entry_point_info
 
@@ -299,6 +301,9 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
         source_file_abs_path_str = os.path.join(entry_point_dir_str, entry_point_file_str)
         entry_point_info = get_entry_point_info(source_file_abs_path_str)
         entry_point_title_str = entry_point_info['title']
+        top_level_category_override_str = ''
+        if 'top_level_category_override' in entry_point_info:
+            top_level_category_override_str = entry_point_info['top_level_category_override']
 
         flat_list = entry_point_rec["flat_list"]
         for rec in flat_list:
@@ -323,7 +328,7 @@ def process_flattened_list(flat_lists, output_content_dir_path_str, output_stati
                 source_file_abs_path_str = os.path.join(dir_abs_path_str, name_str)
 
                 # Make new content path
-                content_dir_abs_path_str = os.path.join(output_content_dir_path_str, entry_point_title_str, dir_rel_entry_point_dir_str)
+                content_dir_abs_path_str = os.path.join(output_content_dir_path_str, top_level_category_override_str, entry_point_title_str, dir_rel_entry_point_dir_str)
 
                 # Make static source path
                 source_dir_path_str = os.path.join(output_static_dir_path_str, dir_rel_source_dir_str)

@@ -1,5 +1,5 @@
 ---
-title: Hugo Docs Builder
+title: 02 Hugo Docs Builder
 ---
 
 ## Make a simple website from a code repository.
