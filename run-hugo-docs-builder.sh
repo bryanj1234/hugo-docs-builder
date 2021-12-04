@@ -131,6 +131,14 @@ mkdir -p $PUBLIC
 # Prevent Hugo Docs Builder from recursing into this directory.
 touch "${PUBLIC}/_SITE_BUILDER_STOP"
 
+echo
+echo "================================================================================="
+echo "================================================================================="
+echo "================================================================================="
+echo
+echo "----- Stuff necessary for GitHub Pages custom domains -----"
+echo "Copying extra files from ${SCRIPT_DIR}/extrafiles into ${OUTPUT_DOCS_DIR}..."
+cp -r "${SCRIPT_DIR}/extrafiles/." $OUTPUT_DOCS_DIR
 
 echo
 echo "================================================================================="
