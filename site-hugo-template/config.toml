@@ -16,7 +16,7 @@ theme = "HDB-hugo-theme"
   landingPageName = ""
 
   # Provide a list of custom css files to load relative from the `static/` folder in the site root.
-  custom_css = ["css/custom-override-theme-bryan.css"]
+  custom_css = ["css/custom-override-theme-bryan.css", "css/css-timeline.css"]
 
   # Change the title separator. Default to "::".
   titleSeparator = "::"
