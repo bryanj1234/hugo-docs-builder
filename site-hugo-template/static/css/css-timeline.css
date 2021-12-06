@@ -15,7 +15,8 @@
 }
 
 .css-timeline-outer {
-/*   display:  flex; */
+  display:  flex;
+  flex-direction: column;
 }
 
 /* Card container */
@@ -42,8 +43,8 @@
 /* Setting the border of top, bottom, left */
 .css-timeline-card:nth-child(odd)::before {
   left: 0;
-  top: -.2rem;
-  bottom: -.3rem;
+  top: -.20rem;
+  bottom: -.30rem;
   border-width: .5rem 0 .5rem .5rem;
   border-radius: 5rem 0 0 5rem;
 }
@@ -52,13 +53,14 @@
 .css-timeline-card:nth-child(even)::before {
   right: 0;
   top: -.2rem;
-  bottom: -.3rem;
+  bottom: -.25rem;
   border-width: .5rem .5rem .5rem 0;
   border-radius: 0 5rem 5rem 0;
 }
 
 /* Removing the border if it is the first css-timeline-card */
 .css-timeline-card:first-child::before {
+  bottom: -.25rem;
   border-top: 0;
   border-top-left-radius: 0;
 }
@@ -77,8 +79,8 @@
 
 /* Information about the css-timeline */
 .css-timeline-info {
-  display: flex;
-  flex-direction: column;
+/*   display: flex;
+  flex-direction: column; */
   background: var(--css-timeline-background-color);
   color: var(--css-timeline-text-color);
   border-radius: 1rem;
@@ -86,7 +88,7 @@
 }
 
 .css-timeline-info > p {
-  margin-bottom: 0
+  margin-bottom: 0;
 }
 
 /* Title of the css-timeline-card */
@@ -116,12 +118,20 @@
 
 /* setting dot to the left if the css-timeline-card is odd */
 .css-timeline-card:nth-child(odd) > .css-timeline-info > .css-timeline-title::before {
-  left: -4.4rem;
+  left: -4.5rem;
   top: 1.7rem;
 }
 
 /* setting dot to the right if the css-timeline-card is odd */
 .css-timeline-card:nth-child(even) > .css-timeline-info > .css-timeline-title::before {
-  right: -4.4rem;
+  right: -4.5rem;
   top: 1.7rem;
+}
+
+.css-timeline-card:nth-child(odd) > .css-timeline-info {
+  float:left
+}
+
+.css-timeline-card:nth-child(even) > .css-timeline-info {
+  float:right
 }
