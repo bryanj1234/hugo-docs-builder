@@ -1,17 +1,40 @@
 :root {
+
+  --css-timeline-text-font-size:  12pt;
+  --css-timeline-title-font-size:  16pt;
+
   --primary-color: #ffffff;
-  --css-timeline-background-color: #eeeeee;
-  --css-timeline-text-color: #444444;
-  --css-timeline-title-color: #ff0000;
-  --css-timeline-line-color: #00ff00;
-  --css-timeline-dot-color: #0000ff;
+  --css-timeline-background-color: #f7edd9;
+  --css-timeline-text-color: #555555;
+  --css-timeline-title-color: #777777;
+  --css-timeline-line-color: #ff5a00;
+  --css-timeline-dot-color: #ff5a00;
+  --css-timeline-dot-border-color: #893000;
+
+  --css-time-line-curve-radius-top: 3em;
+  --css-time-line-curve-radius-bottom: 4em;
+
+  --css-timeline-width:  60rem;
+  --entry-min-width: calc(var(--css-timeline-width) / 5);
+  --shim-width: calc(2.5em + var(--css-timeline-width)/2 - var(--entry-min-width)/2 );
+  --entry-max-width: calc(var(--shim-width) + var(--entry-min-width) / 2);
+
+  --line-thickness: .25em;
+  --margin-calc: calc( -0.425 * var(--line-thickness));
+  --margin-calc-first: calc( -0.45 * var(--line-thickness));
+  --margin-calc-last: calc( -0.45 * var(--line-thickness));
+
+  --dot-size: .7em;
+  --dot-offset-calc: calc( -2em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc-first: calc( -2.1em - var(--dot-size) - var(--line-thickness));
 }
 
 /* Timeline Container */
 .css-timeline {
+  font-size: var(--css-timeline-font-size);
   background: var(--primary-color);
-  margin: .5rem auto;
-  padding: .5rem;
+  margin: .5em auto;
+  padding: .5em;
 }
 
 .css-timeline-outer {
@@ -21,70 +44,70 @@
 
 /* Card container */
 .css-timeline-card {
-  position: relative;
-  max-width: 40rem;
+  display:  flex;
+  flex-direction: row;
+  width: var(--css-timeline-width);
 }
 
-/* setting padding based on even or odd */
-.css-timeline-card:nth-child(odd) {
-  padding: 1rem 10rem 1rem 3rem;
-}
-.css-timeline-card:nth-child(even) {
-  padding: 1rem 3rem 1rem 10rem;
-}
-/* Global ::before */
-.css-timeline-card::before {
-  content: "";
-  position: absolute;
-  width: 50%;
+.css-timeline-entry{
+  padding-top: 1.5em;
+  padding-left: calc(var(--css-time-line-curve-radius-top)/2);
+  padding-right: calc(var(--css-time-line-curve-radius-top)/2);
+  padding-bottom: 2em;
+  margin: 0em;
+  max-width: var(--entry-max-width);
+  min-width: var(--entry-min-width);
   border: solid var(--css-timeline-line-color);
 }
 
 /* Setting the border of top, bottom, left */
-.css-timeline-card:nth-child(odd)::before {
+.css-timeline-card:nth-child(odd) > .css-timeline-entry {
   left: 0;
-  top: -.20rem;
-  bottom: -.30rem;
-  border-width: .5rem 0 .5rem .5rem;
-  border-radius: 5rem 0 0 5rem;
+  margin-top: var(--margin-calc);
+  margin-bottom: var(--margin-calc);
+  border-width: var(--line-thickness) 0 var(--line-thickness) var(--line-thickness);
+  border-radius: var(--css-time-line-curve-radius-top) 0 0 var(--css-time-line-curve-radius-bottom);
 }
 
 /* Setting the border of top, bottom, right */
-.css-timeline-card:nth-child(even)::before {
+.css-timeline-card:nth-child(even) > .css-timeline-entry {
   right: 0;
-  top: -.2rem;
-  bottom: -.25rem;
-  border-width: .5rem .5rem .5rem 0;
-  border-radius: 0 5rem 5rem 0;
+  margin-top: var(--margin-calc);
+  margin-bottom: var(--margin-calc);
+  border-width: var(--line-thickness) var(--line-thickness) var(--line-thickness) 0;
+  border-radius: 0 var(--css-time-line-curve-radius-top) var(--css-time-line-curve-radius-bottom) 0;
 }
 
-/* Removing the border if it is the first css-timeline-card */
-.css-timeline-card:first-child::before {
-  bottom: -.25rem;
+/* emoving the border if it is the first css-timeline-card */
+.css-timeline-card:first-child > .css-timeline-entry {
+  margin-bottom: var(--margin-calc-first);
   border-top: 0;
   border-top-left-radius: 0;
 }
 
-/* Removing the border if it is the last css-timeline-card  and it's odd */
-.css-timeline-card:last-child:nth-child(odd)::before {
+/* emoving the border if it is the last css-timeline-card  and it's odd */
+.css-timeline-card:last-child:nth-child(odd) > .css-timeline-entry {
+  margin-top:  var(--margin-calc-last);
   border-bottom: 0;
   border-bottom-left-radius: 0;
 }
 
-/* Removing the border if it is the last css-timeline-card  and it's even */
-.css-timeline-card:last-child:nth-child(even)::before {
+/* emoving the border if it is the last css-timeline-card  and it's even */
+.css-timeline-card:last-child:nth-child(even) > .css-timeline-entry {
+  margin-top: var(--margin-calc-last);
   border-bottom: 0;
   border-bottom-right-radius: 0;
 }
 
 /* Information about the css-timeline */
 .css-timeline-info {
-/*   display: flex;
-  flex-direction: column; */
+  padding-top: .5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: .5em;
   background: var(--css-timeline-background-color);
   color: var(--css-timeline-text-color);
-  border-radius: 1rem;
-  padding: 1rem;
+  border-radius: 1em;
 }
 
 .css-timeline-info > p {
@@ -93,45 +116,62 @@
 
 /* Title of the css-timeline-card */
 .css-timeline-title {
+  font-size: var(--css-timeline-title-font-size);
   color: var(--css-timeline-title-color) !important;
   position: relative;
-  margin-top:  -.5rem !important;
-  margin-bottom:  -.5rem !important;
+  margin-top:  0em !important;
+  margin-bottom:  1em !important;
 }
 
 /* Timeline dot  */
 .css-timeline-title::before {
   content: "";
   position: absolute;
-
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--dot-size);
+  height: var(--dot-size);
   background: var(--css-timeline-dot-color);
   border-radius: 999px;
-  border: 3px solid var(--css-timeline-line-color);
+  border: 3px solid var(--css-timeline-dot-border-color);
 }
 
 /* text right if the css-timeline-card is even  */
-.css-timeline-card:nth-child(even) > .css-timeline-info > .css-timeline-title {
+.css-timeline-card:nth-child(even) .css-timeline-title {
   text-align: right;
 }
 
 /* setting dot to the left if the css-timeline-card is odd */
-.css-timeline-card:nth-child(odd) > .css-timeline-info > .css-timeline-title::before {
-  left: -4.5rem;
-  top: 1.7rem;
+.css-timeline-card:nth-child(odd) .css-timeline-title::before {
+  left: var(--dot-offset-calc);
+  top: .0em;
 }
 
 /* setting dot to the right if the css-timeline-card is odd */
-.css-timeline-card:nth-child(even) > .css-timeline-info > .css-timeline-title::before {
-  right: -4.5rem;
-  top: 1.7rem;
+.css-timeline-card:nth-child(even) .css-timeline-title::before {
+  right: var(--dot-offset-calc);
+  top: .0em;
 }
 
-.css-timeline-card:nth-child(odd) > .css-timeline-info {
-  float:left
+/* setting dot to the left for the first css-timeline-card */
+.css-timeline-card:first-child .css-timeline-title::before {
+  left: var(--dot-offset-calc-first);
+  top: .0em;
 }
 
-.css-timeline-card:nth-child(even) > .css-timeline-info {
-  float:right
+.css-timeline-card:nth-child(even) {
+  justify-content: left;
 }
+
+.css-timeline-card:nth-child(odd)  {
+  justify-content: right;
+}
+
+.css-timeline-card:nth-child(even) > .shim_1 {
+   width: var(--shim-width);
+   /* background:  #efefff; */
+}
+
+.css-timeline-card:nth-child(odd) > .shim_2 {
+  width: var(--shim-width);
+  /* background:  #efefff; */
+}
+
