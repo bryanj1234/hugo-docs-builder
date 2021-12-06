@@ -1,7 +1,9 @@
 :root {
 
-  --css-timeline-text-font-size:  12pt;
-  --css-timeline-title-font-size:  16pt;
+  --css-timeline-width:  100%;
+
+  --css-timeline-text-font-size:  14pt !important;
+  --css-timeline-title-font-size:  18pt !important;
 
   --primary-color: #ffffff;
   --css-timeline-background-color: #f7edd9;
@@ -11,27 +13,28 @@
   --css-timeline-dot-color: #ff5a00;
   --css-timeline-dot-border-color: #893000;
 
-  --css-time-line-curve-radius-top: 3em;
-  --css-time-line-curve-radius-bottom: 4em;
+  --css-time-line-curve-radius: 3em;
+  --css-time-line-info-curve-radius: 2.3em;
 
-  --css-timeline-width:  60rem;
-  --entry-min-width: calc(var(--css-timeline-width) / 5);
-  --shim-width: calc(2.5em + var(--css-timeline-width)/2 - var(--entry-min-width)/2 );
+  --shim-width: calc(1.0em + var(--css-timeline-width)/3);
+  --entry-min-width: calc(1.0em + var(--css-timeline-width)/3);
   --entry-max-width: calc(var(--shim-width) + var(--entry-min-width) / 2);
 
-  --line-thickness: .25em;
-  --margin-calc: calc( -0.425 * var(--line-thickness));
-  --margin-calc-first: calc( -0.45 * var(--line-thickness));
+  --line-thickness: .3em;
+  --margin-calc: calc( -0.45 * var(--line-thickness));
+  --margin-calc-first: calc( -.425 * var(--line-thickness));
   --margin-calc-last: calc( -0.45 * var(--line-thickness));
 
   --dot-size: .7em;
-  --dot-offset-calc: calc( -2em - var(--dot-size) - var(--line-thickness));
-  --dot-offset-calc-first: calc( -2.1em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc: calc( -2.25em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc-first: calc( -2.4em - var(--dot-size) - var(--line-thickness));
+
+  --line-plug: -0.0em;
 }
 
 /* Timeline Container */
 .css-timeline {
-  font-size: var(--css-timeline-font-size);
+  font-size: var(--css-timeline-text-font-size);
   background: var(--primary-color);
   margin: .5em auto;
   padding: .5em;
@@ -50,50 +53,61 @@
 }
 
 .css-timeline-entry{
-  padding-top: 1.5em;
-  padding-left: calc(var(--css-time-line-curve-radius-top)/2);
-  padding-right: calc(var(--css-time-line-curve-radius-top)/2);
-  padding-bottom: 2em;
+  position: relative;
+  padding-top: 1.0em;
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  padding-bottom: 1.0em;
   margin: 0em;
   max-width: var(--entry-max-width);
   min-width: var(--entry-min-width);
+}
+.css-timeline-entry::before {
+  position: absolute;
+  border-width: 1em;
   border: solid var(--css-timeline-line-color);
-}
+  content: "";
 
-/* Setting the border of top, bottom, left */
-.css-timeline-card:nth-child(odd) > .css-timeline-entry {
-  left: 0;
   margin-top: var(--margin-calc);
   margin-bottom: var(--margin-calc);
+}
+
+.css-timeline-card:nth-child(odd) > .css-timeline-entry::before {
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: calc( var(--css-timeline-width)/2 - (var(--css-timeline-width) - (var(--shim-width) + 100%) ) + var(--line-plug) );
+
   border-width: var(--line-thickness) 0 var(--line-thickness) var(--line-thickness);
-  border-radius: var(--css-time-line-curve-radius-top) 0 0 var(--css-time-line-curve-radius-bottom);
+  border-radius: var(--css-time-line-curve-radius) 0 0 var(--css-time-line-curve-radius);
 }
 
-/* Setting the border of top, bottom, right */
-.css-timeline-card:nth-child(even) > .css-timeline-entry {
-  right: 0;
-  margin-top: var(--margin-calc);
-  margin-bottom: var(--margin-calc);
+.css-timeline-card:nth-child(even) > .css-timeline-entry::before {
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: calc( var(--css-timeline-width)/2 - (var(--css-timeline-width) - (var(--shim-width) + 100%) ) + var(--line-plug) );
+
   border-width: var(--line-thickness) var(--line-thickness) var(--line-thickness) 0;
-  border-radius: 0 var(--css-time-line-curve-radius-top) var(--css-time-line-curve-radius-bottom) 0;
+  border-radius: 0 var(--css-time-line-curve-radius) var(--css-time-line-curve-radius) 0;
 }
 
-/* emoving the border if it is the first css-timeline-card */
-.css-timeline-card:first-child > .css-timeline-entry {
+/* Removing the border if it is the first css-timeline-card */
+.css-timeline-card:first-child > .css-timeline-entry::before  {
   margin-bottom: var(--margin-calc-first);
   border-top: 0;
   border-top-left-radius: 0;
 }
 
-/* emoving the border if it is the last css-timeline-card  and it's odd */
-.css-timeline-card:last-child:nth-child(odd) > .css-timeline-entry {
+/* Removing the border if it is the last css-timeline-card  and it's odd */
+.css-timeline-card:last-child:nth-child(odd) > .css-timeline-entry::before  {
   margin-top:  var(--margin-calc-last);
   border-bottom: 0;
   border-bottom-left-radius: 0;
 }
 
-/* emoving the border if it is the last css-timeline-card  and it's even */
-.css-timeline-card:last-child:nth-child(even) > .css-timeline-entry {
+/* Removing the border if it is the last css-timeline-card  and it's even */
+.css-timeline-card:last-child:nth-child(even) > .css-timeline-entry::before  {
   margin-top: var(--margin-calc-last);
   border-bottom: 0;
   border-bottom-right-radius: 0;
@@ -102,12 +116,12 @@
 /* Information about the css-timeline */
 .css-timeline-info {
   padding-top: .5em;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: var(--css-time-line-curve-radius);
+  padding-right: var(--css-time-line-curve-radius);
   padding-bottom: .5em;
   background: var(--css-timeline-background-color);
   color: var(--css-timeline-text-color);
-  border-radius: 1em;
+  border-radius: var(--css-time-line-info-curve-radius);
 }
 
 .css-timeline-info > p {
