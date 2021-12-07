@@ -6,11 +6,12 @@
   --css-timeline-title-font-size:  18pt !important;
 
   --primary-color: #ffffff;
-  --css-timeline-background-color: #f7edd9;
+  --css-timeline-background-color: #ffffff;
+  --css-timeline-border-color: #47c56e;
   --css-timeline-text-color: #555555;
   --css-timeline-title-color: #777777;
-  --css-timeline-line-color: #ff5a00;
-  --css-timeline-dot-color: #ff5a00;
+  --css-timeline-line-color: #ff6600;
+  --css-timeline-dot-color: #ff6600;
   --css-timeline-dot-border-color: #893000;
 
   --css-time-line-curve-radius: 3em;
@@ -26,8 +27,8 @@
   --margin-calc-last: calc( -0.45 * var(--line-thickness));
 
   --dot-size: .7em;
-  --dot-offset-calc: calc( -2.25em - var(--dot-size) - var(--line-thickness));
-  --dot-offset-calc-first: calc( -2.4em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc: calc( -1.30em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc-first: calc( -1.35em - var(--dot-size) - var(--line-thickness));
 
   --line-plug: -0.0em;
 }
@@ -52,7 +53,7 @@
   width: var(--css-timeline-width);
 }
 
-.css-timeline-entry{
+.css-timeline-entry {
   position: relative;
   padding-top: 1.0em;
   padding-left: 1.0em;
@@ -116,11 +117,12 @@
 /* Information about the css-timeline */
 .css-timeline-info {
   padding-top: .5em;
-  padding-left: var(--css-time-line-curve-radius);
-  padding-right: var(--css-time-line-curve-radius);
-  padding-bottom: .5em;
+  padding-left: calc(var(--css-time-line-curve-radius)/2);
+  padding-right: calc(var(--css-time-line-curve-radius)/2);
+  padding-bottom: 1em;
   background: var(--css-timeline-background-color);
   color: var(--css-timeline-text-color);
+  border: .2em dotted var(--css-timeline-border-color);
   border-radius: var(--css-time-line-info-curve-radius);
 }
 
