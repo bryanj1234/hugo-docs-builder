@@ -1,6 +1,36 @@
 :root {
 
-  --css-timeline-width: 45rem; /* !!! NOTE: CANNOT USE A % FOR THIS! WILL MESS UP THE calc() FUNCTION. */
+  /*** START THINGS WHICH ARE RELATED TO TIMELINE DIV WIDTH **************************************************************/
+
+  /*  YOU MIGHT WANT TO USE JavaScript SIMILAR TO THIS IF YOU NEED TO RESIZE THE TIMELINE.
+
+    <script>
+      function refreshTimelineWidth() {
+        var timeline_wrapper_width = document.getElementById('timeline_wrapper').clientWidth;
+        var my_timeline_width = .90 * timeline_wrapper_width;
+        var shim_width = my_timeline_width/3;
+        var entry_min_width = my_timeline_width/5;
+        var entry_max_width = my_timeline_width - shim_width;
+        document.body.style.setProperty('--css-timeline-width', my_timeline_width + 'px');
+        document.body.style.setProperty('--shim-width', shim_width + 'px');
+        document.body.style.setProperty('--entry-min-width', entry_min_width + 'px');
+        document.body.style.setProperty('--entry-max-width', entry_max_width + 'px');
+      }
+      window.addEventListener('load', refreshTimelineWidth, true);
+      window.addEventListener('resize', refreshTimelineWidth, true);
+    </script>
+
+  */
+
+  --css-timeline-width: 500px; /* !!! NOTE: CANNOT USE A % FOR THIS! WILL MESS UP THE calc() FUNCTION. */
+  --shim-width: calc(var(--css-timeline-width)/3);
+  --entry-min-width: calc(var(--css-timeline-width)/5);
+  --entry-max-width: calc(var(--css-timeline-width) - var(--shim-width));
+
+  /*** END THINGS WHICH ARE RELATED TO TIMELINE DIV WIDTH **************************************************************/
+
+
+
 
   --css-timeline-text-font-size:  14pt !important;
   --css-timeline-title-font-size:  18pt !important;
@@ -17,10 +47,6 @@
   --css-time-line-curve-radius: 3em;
   --css-time-line-info-curve-radius: 2.3em;
 
-  --shim-width: calc(var(--css-timeline-width)/3);
-  --entry-min-width: calc(var(--css-timeline-width)/5);
-  --entry-max-width: calc(var(--css-timeline-width) - var(--shim-width));
-
   --line-thickness: .3em;
   --margin-calc: calc( -0.45 * var(--line-thickness));
   --margin-calc-first: calc( -.45 * var(--line-thickness));
@@ -30,15 +56,15 @@
   --dot-offset-calc: calc( -1.30em - var(--dot-size) - var(--line-thickness));
   --dot-offset-calc-first: calc( -1.35em - var(--dot-size) - var(--line-thickness));
 
-  --line-plug: 0.0em;
+  --line-plug: 2px;
 }
 
 /* Timeline Container */
 .css-timeline {
-  width: var(--css-timeline-width);
+  width:  var(--css-timeline-width);
   font-size: var(--css-timeline-text-font-size);
   background: var(--primary-color);
-  /* background: linear-gradient(#000, #000) no-repeat center/2px 100%; */ /* For debugging */
+  /* background: linear-gradient(#000, #000) no-repeat center/2px 100%;*/ /* For debugging */
   margin: .5em auto;
   padding: 0.0em;
 }
@@ -48,6 +74,7 @@
 
 /* Card container */
 .css-timeline-card {
+  width: 100%;
   display:  flex;
   flex-direction: row;
 }
@@ -64,7 +91,6 @@
 }
 .css-timeline-entry::before {
   position: absolute;
-  border-width: 1em;
   border: solid var(--css-timeline-line-color);
   content: "";
 
