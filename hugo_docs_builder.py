@@ -271,7 +271,6 @@ def make_new_file(new_file_info):
                 the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_ext: ' + file_extension)
-                the_file.write('\allow_rendering_markdown: ' + allow_rendering_markdown)
                 the_file.write('\n---')
                 the_file.write('\n\n')
 
