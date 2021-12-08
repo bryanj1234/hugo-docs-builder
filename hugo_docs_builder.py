@@ -242,11 +242,11 @@ def make_new_file(new_file_info):
         elif file_name == '_SITE_BUILDER_STOP':
             pass
 
-        elif file_extension == '_SB_':  # The file should be processed as markdown, not source.
+        # elif file_extension == '_SB_':  # The file should be processed as markdown, not source.
 
-            # Copy file, rename, and remove original.
-            new_content_file_name_str = os.path.join(content_dir_abs_path_str, file_base_name)
-            shutil.copyfile(source_file_abs_path_str, new_content_file_name_str)
+        #     # Copy file with new name that doesn't have the '_SB_' suffix.
+        #     new_content_file_name_str = os.path.join(content_dir_abs_path_str, file_base_name)
+        #     shutil.copyfile(source_file_abs_path_str, new_content_file_name_str)
 
         else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
@@ -271,6 +271,7 @@ def make_new_file(new_file_info):
                 the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_ext: ' + file_extension)
+                the_file.write('\allow_rendering_markdown: ' + allow_rendering_markdown)
                 the_file.write('\n---')
                 the_file.write('\n\n')
 
