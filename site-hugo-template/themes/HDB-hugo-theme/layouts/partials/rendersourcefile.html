@@ -66,6 +66,11 @@
         {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
         <pre><code class="tex">{{$file_contents}}</code></pre>
 
+    {{else if eq .Params.source_file_ext "TXT"}}
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre>{{$file_contents}}</pre>
+
     {{else if eq .Params.source_file_ext "JPG"}}
 
         <img src = "{{.Params.source_file_full_name}}">

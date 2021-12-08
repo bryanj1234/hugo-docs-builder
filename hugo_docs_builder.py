@@ -232,7 +232,6 @@ def make_new_file(new_file_info):
                     source_file_rel_dir_str = pathlib.Path(source_file_rel_path_str).parent
                     post['source_file_full_name'] = os.path.join('/', publish_static_source_dir_str, source_file_rel_dir_str, post['render_html_file'])
 
-
                 index_file_str = os.path.join(content_dir_abs_path_str, "_index.md")
                 with open(index_file_str, 'w') as f:
                     f.write(frontmatter.dumps(post))
