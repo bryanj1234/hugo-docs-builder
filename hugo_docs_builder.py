@@ -199,12 +199,14 @@ def make_new_file(new_file_info):
 
         file_name = pathlib.Path(source_file_abs_path_str).name
 
-        _, file_extension = os.path.splitext(source_file_abs_path_str)
+        file_base_name, file_extension = os.path.splitext(file_name)
+
         file_extension = file_extension.upper().replace(".", "")
 
         # START File handling depends on file name. ##########################################################
 
-        if file_name == "_SITE_BUILDER_START.md" or file_name == "_SITE_BUILDER_INDEX.md":
+        if file_name == "_SITE_BUILDER_START.md" \
+                or file_name == "_SITE_BUILDER_INDEX.md":
 
             # print("\n***********************************************************")
             # print(content_dir_abs_path_str)
@@ -239,6 +241,12 @@ def make_new_file(new_file_info):
 
         elif file_name == '_SITE_BUILDER_STOP':
             pass
+
+        elif file_extension == '_SB_':  # The file should be processed as markdown, not source.
+
+            # Copy file, rename, and remove original.
+            new_content_file_name_str = os.path.join(content_dir_abs_path_str, file_base_name)
+            shutil.copyfile(source_file_abs_path_str, new_content_file_name_str)
 
         else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
