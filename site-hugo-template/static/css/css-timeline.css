@@ -141,6 +141,7 @@
 
 /* Information about the css-timeline */
 .css-timeline-info {
+  position: relative;
   padding-top: .5em;
   padding-left: calc(var(--css-time-line-curve-radius)/2);
   padding-right: calc(var(--css-time-line-curve-radius)/2);
@@ -149,6 +150,7 @@
   color: var(--css-timeline-text-color);
   border: .2em dotted var(--css-timeline-border-color);
   border-radius: var(--css-time-line-info-curve-radius);
+  z-index:  99;
 }
 
 .css-timeline-info > p {

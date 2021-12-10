@@ -54,7 +54,7 @@ theme = "HDB-hugo-theme"
 
   # Javascript and CSS cache are automatically busted when new version of site is generated.
   # Set this to true to disable this behavior (some proxies don't handle well this optimization)
-  disableAssetsBusting = false
+  disableAssetsBusting = true
 
 [markup.goldmark.renderer]
 unsafe = true
