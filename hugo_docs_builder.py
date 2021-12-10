@@ -241,12 +241,6 @@ def make_new_file(new_file_info):
         elif file_name == '_SITE_BUILDER_STOP':
             pass
 
-        # elif file_extension == '_SB_':  # The file should be processed as markdown, not source.
-
-        #     # Copy file with new name that doesn't have the '_SB_' suffix.
-        #     new_content_file_name_str = os.path.join(content_dir_abs_path_str, file_base_name)
-        #     shutil.copyfile(source_file_abs_path_str, new_content_file_name_str)
-
         else: # Treat as a code source file in /static/source_files and wrap it up in a *.md file...
 
             # Copy the original file to the static source directory

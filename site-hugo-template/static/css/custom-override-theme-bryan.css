@@ -496,3 +496,16 @@ blockquote {
     font-size: 1.0rem;
      display: block;
      text-align: right;
+}
+
+.my_flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.my_flex > * {
+    min-width: 15rem;
+    max-width: 30rem;
+}
+
