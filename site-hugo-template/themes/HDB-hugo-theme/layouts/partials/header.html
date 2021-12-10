@@ -93,6 +93,10 @@
             {{ end }}
             {{.Title}}
           </h1>
+          {{$toc := (and (not .Params.disableToc) (not .Params.chapter))}}
+          {{ if $toc }}
+            {{ replace .TableOfContents "nav id=\"TableOfContents\"" "nav class=\"header_toc\"" | safeHTML }}
+          {{ end }}
         {{end}}
 
         <div id="body-inner">
