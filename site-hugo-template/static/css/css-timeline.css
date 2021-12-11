@@ -89,6 +89,7 @@
   max-width: var(--entry-max-width);
   min-width: var(--entry-min-width);
 }
+
 .css-timeline-entry::before {
   position: absolute;
   border: solid var(--css-timeline-line-color);
@@ -153,7 +154,12 @@
   z-index:  99;
 }
 
-.css-timeline-info > p {
+.css-timeline-info p {
+  margin: 0;
+}
+
+.css-timeline-info ol, .css-timeline-info ul {
+  margin-top: 0;
   margin-bottom: 0;
 }
 
