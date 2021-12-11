@@ -53,8 +53,8 @@
   --margin-calc-last: calc( -0.45 * var(--line-thickness));
 
   --dot-size: .7em;
-  --dot-offset-calc: calc( -1.30em - var(--dot-size) - var(--line-thickness));
-  --dot-offset-calc-first: calc( -1.35em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc: calc( -1.00em - var(--dot-size) - var(--line-thickness));
+  --dot-offset-calc-first: calc( -1.00em - var(--dot-size) - var(--line-thickness));
 
   --line-plug: 2px;
 }
