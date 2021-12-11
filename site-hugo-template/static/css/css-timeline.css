@@ -145,7 +145,7 @@
 
 .css-timeline-card:nth-child(odd) > .css-timeline-entry > .line-arrow {
   position:  absolute;
-  right: 6rem;
+  left: calc( -1.5rem + var(--css-timeline-width)/2 - calc(var(--css-timeline-width) - (var(--shim-width) + 100%)) + var(--line-plug) );
   bottom:  -20px;
   background-color: var(--css-timeline-background-color);
   color:  var(--css-timeline-line-color);
@@ -156,7 +156,7 @@
 
 .css-timeline-card:nth-child(even) > .css-timeline-entry > .line-arrow {
   position:  absolute;
-  left: 6rem;
+  right: calc( -1.5rem + var(--css-timeline-width)/2 - calc(var(--css-timeline-width) - (var(--shim-width) + 100%)) + var(--line-plug) );
   bottom:  -20px;
   background-color: var(--css-timeline-background-color);
   color:  var(--css-timeline-line-color);
