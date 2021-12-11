@@ -57,6 +57,7 @@
   --dot-offset-calc-first: calc( -1.00em - var(--dot-size) - var(--line-thickness));
 
   --line-plug: 2px;
+
 }
 
 /* Timeline Container */
@@ -140,6 +141,36 @@
   margin-top: var(--margin-calc-last);
   border-bottom: 0;
   border-bottom-right-radius: 0;
+}
+
+.css-timeline-card:nth-child(odd) > .css-timeline-entry > .line-arrow {
+  position:  absolute;
+  right: 6rem;
+  bottom:  -20px;
+  background-color: var(--css-timeline-background-color);
+  color:  var(--css-timeline-line-color);
+  font-size: 32px;
+  font-weight:  bold;
+  z-index: 98;
+}
+
+.css-timeline-card:nth-child(even) > .css-timeline-entry > .line-arrow {
+  position:  absolute;
+  left: 6rem;
+  bottom:  -20px;
+  background-color: var(--css-timeline-background-color);
+  color:  var(--css-timeline-line-color);
+  font-size: 32px;
+  font-weight:  bold;
+  z-index: 98;
+}
+
+.css-timeline-card:last-child:nth-child(odd) > .css-timeline-entry > .line-arrow {
+  display:  none;
+}
+
+.css-timeline-card:last-child:nth-child(even) > .css-timeline-entry > .line-arrow {
+  display:  none;
 }
 
 /* Information about the css-timeline */
