@@ -23,9 +23,9 @@
   */
 
   --css-timeline-width: 500px; /* !!! NOTE: CANNOT USE A % FOR THIS! WILL MESS UP THE calc() FUNCTION. */
-  --shim-width: calc(var(--css-timeline-width)/3);
-  --entry-min-width: calc(var(--css-timeline-width)/5);
-  --entry-max-width: calc(var(--css-timeline-width) - var(--shim-width));
+  --shim-width:  calc(var(--css-timeline-width)/10);
+  --entry-min-width: calc(var(--css-timeline-width)/2 - var(--shim-width));
+  --entry-max-width: calc(var(--css-timeline-width) - var(--entry-min-width));
 
   /*** END THINGS WHICH ARE RELATED TO TIMELINE DIV WIDTH **************************************************************/
 
@@ -80,14 +80,16 @@
 }
 
 .css-timeline-entry {
+  flex: 5 1 auto;
   position: relative;
   padding-top: 1.0em;
   padding-left: 1.0em;
   padding-right: 1.0em;
   padding-bottom: 1.0em;
   margin: 0em;
-  max-width: var(--entry-max-width);
-  min-width: var(--entry-min-width);
+  /* width:  var(--entry-max-width); */
+  /* max-width: var(--entry-max-width); */
+  /* min-width: var(--entry-min-width); */
 }
 
 .css-timeline-entry::before {
@@ -144,8 +146,8 @@
 .css-timeline-info {
   position: relative;
   padding-top: .5em;
-  padding-left: calc(var(--css-time-line-curve-radius)/2);
-  padding-right: calc(var(--css-time-line-curve-radius)/2);
+  padding-left: calc(var(--css-time-line-curve-radius)/4);
+  padding-right: calc(var(--css-time-line-curve-radius)/4);
   padding-bottom: 1em;
   background: var(--css-timeline-background-color);
   color: var(--css-timeline-text-color);
@@ -215,12 +217,14 @@
 }
 
 .css-timeline-card:nth-child(even) > .shim_1 {
-   width: var(--shim-width);
+  flex: 0 5 auto;
+  width:  var(--shim-width);
   /* background:  #efefff; */
 }
 
 .css-timeline-card:nth-child(odd) > .shim_2 {
-  width: var(--shim-width);
+  flex: 0 5 auto;
+  width:  var(--shim-width);
   /* background:  #ffefef; */
 }
 
