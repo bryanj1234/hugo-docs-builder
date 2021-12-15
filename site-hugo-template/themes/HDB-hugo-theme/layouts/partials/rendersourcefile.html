@@ -75,6 +75,14 @@
 
         <img src = "{{.Params.source_file_full_name}}">
 
+    {{else if eq .Params.source_file_ext "PNG"}}
+
+        <img src = "{{.Params.source_file_full_name}}">
+
+    {{else if eq .Params.source_file_ext "GIF"}}
+
+        <img src = "{{.Params.source_file_full_name}}">
+
     {{else if eq .Params.source_file_ext "MP4"}}
 
         <video controls autoplay width="60%" class="center">
