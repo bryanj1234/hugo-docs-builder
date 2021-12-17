@@ -100,10 +100,16 @@
 {{ $curContext := "curContext" }}
 {{ with $currentNode.File }}{{ $currentFileUniqueID = .UniqueID }}{{ end }}
     {{with .curContext}}
+
+        {{$target_str := ""}}
+        {{if eq .Params.type "HDBredirecthtml"}}
+            {{$target_str = "'_blank'"}}
+        {{end}}
+
         {{if and .IsSection (or (not .Params.hidden) $.showhidden)}}
             {{safeHTML .Params.head}}
             <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item">
-                <a href="{{.RelPermalink}}">
+                <a href="{{.RelPermalink}}" target='{{$target_str}}'>
                   {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
                   {{ if $showvisitedlinks}}
                     <i class="fas fa-check read-icon"></i>
@@ -113,7 +119,7 @@
         {{else}}
             {{ if not .Params.Hidden }}
                 <li data-nav-id="{{.RelPermalink}}" title="{{.Title}}" class="dd-item">
-                    <a href="{{ .RelPermalink}}">
+                    <a href="{{ .RelPermalink}}" ttarget='{{$target_str}}'>
                     {{safeHTML .Params.Pre}}{{or .Params.menuTitle .LinkTitle .Title}}{{safeHTML .Params.Post}}
                     {{ if $showvisitedlinks}}<i class="fas fa-check read-icon"></i>{{end}}
                     </a>

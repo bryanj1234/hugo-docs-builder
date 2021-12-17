@@ -160,7 +160,12 @@
         active_menu_item="{{$active_menu_item}}"
       >
 
-      <a href="{{.RelPermalink}}">
+      {{$target_str := ""}}
+      {{if eq .Params.type "HDBredirecthtml"}}
+          {{$target_str = "'_blank'"}}
+      {{end}}
+
+      <a href="{{.RelPermalink}}" target='{{$target_str}}'>
           {{if or (eq .File.UniqueID $currentFileUniqueID) (and (.IsAncestor $currentNode) (not (eq .Parent $currentFileUniqueID $currentNode.Parent)) ) }}
             <i class="menufolderopen fas fa-folder-open"></i>
           {{else}}
