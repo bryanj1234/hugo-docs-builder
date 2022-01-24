@@ -151,7 +151,7 @@
   color:  var(--css-timeline-line-color);
   font-size: 32px;
   font-weight:  bold;
-  z-index: 98;
+  z-index: 69;
 }
 
 .css-timeline-card:nth-child(even) > .css-timeline-entry > .line-arrow {
@@ -162,7 +162,7 @@
   color:  var(--css-timeline-line-color);
   font-size: 32px;
   font-weight:  bold;
-  z-index: 98;
+  z-index: 69;
 }
 
 .css-timeline-card:last-child:nth-child(odd) > .css-timeline-entry > .line-arrow {
@@ -184,7 +184,7 @@
   color: var(--css-timeline-text-color);
   border: .2em dotted var(--css-timeline-border-color);
   border-radius: var(--css-time-line-info-curve-radius);
-  z-index:  99;
+  z-index:  70;
 }
 
 .css-timeline-info p {
@@ -212,7 +212,7 @@
   width: var(--dot-size);
   height: var(--dot-size);
   background: var(--css-timeline-dot-color);
-  border-radius: 999px;
+  border-radius: 709px;
   border: 3px solid var(--css-timeline-dot-border-color);
 }
 

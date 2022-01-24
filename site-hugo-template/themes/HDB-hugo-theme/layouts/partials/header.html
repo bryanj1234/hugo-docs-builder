@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}" class="js csstransforms3d">
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {{ hugo.Generator }}
     {{ partial "meta.html" . }}
     {{ partial "favicon.html" . }}
+
+    <!-- open graph -->
+    {{ if .Params.og_image }}
+    <meta property="og:image" content="{{ .Params.og_image | relURL }}"/>
+    {{ end }}
+
     <title>{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
 
     {{ $assetBusting := not .Site.Params.disableAssetsBusting }}

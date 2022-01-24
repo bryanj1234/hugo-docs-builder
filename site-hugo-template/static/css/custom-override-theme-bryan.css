@@ -73,9 +73,9 @@
 }
 
  #body {
-     position: relative;
-     margin-left: 400px;
-     min-height: 100%;
+    position: relative;
+    margin-left: 400px;
+    min-height: 100%;
 }
 
 #body_title {
@@ -87,6 +87,7 @@
     margin-top: 2rem;
     margin-left: 10%;
     margin-right: 10%;
+    background-color: rgba(255,255,255,1);
 }
 
  #breadcrumbs .links {
@@ -214,7 +215,6 @@ body {
     font-size: 18px !important;
 }
 
-
 a {
     color: var(--MAIN-LINK-color);
 }
@@ -239,6 +239,7 @@ a:hover {
 #body a.highlight:after {
     background-color: var(--MAIN-LINK-HOVER-color);
 }
+
 
 #top-bar {
     /* background: var(--TOP-BAR-BG-color); */
