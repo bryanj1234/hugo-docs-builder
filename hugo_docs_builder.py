@@ -6,6 +6,7 @@ import shutil
 from bs4 import BeautifulSoup
 import frontmatter
 import io
+import magic
 
 print()
 print("##############################################################")
@@ -254,6 +255,17 @@ def make_new_file(new_file_info):
             # Wrap up the file to put into the content directory
             wrapper_md_file_path_str = os.path.join(content_dir_abs_path_str, '__WRAP__' + file_name + ".md")
 
+            # Guess MIME type of file
+            mime_type_str = ''
+            with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+                mime_type_str = m.id_filename(source_file_abs_path_str)
+
+            # Get file size in Mb
+            file_size_kb = os.path.getsize(source_file_abs_path_str) / 1024
+
+            # Set too_big_to_render
+            try_to_render = 'try' if file_size_kb < 100 else 'donttry'
+
             with open(wrapper_md_file_path_str, 'w') as the_file:
                 the_file.write('---')
                 the_file.write('\nTitle: ' + file_name)
@@ -264,6 +276,8 @@ def make_new_file(new_file_info):
                 the_file.write('\nsource_file_hugo_full_name: ' + os.path.join('/',output_static_dir_path_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_full_name: ' + os.path.join('/',publish_static_source_dir_str, source_file_rel_path_str))
                 the_file.write('\nsource_file_ext: ' + file_extension)
+                the_file.write('\nsource_file_mimetype: ' + mime_type_str)
+                the_file.write('\ntry_to_render: ' + try_to_render)
                 the_file.write('\n---')
                 the_file.write('\n\n')
 

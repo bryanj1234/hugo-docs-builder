@@ -15,14 +15,14 @@
 {{ define "render-source-file" }}
     {{with .context}}
 
-    <!--
-    * {{.Params.is_source_file}}
+<!--     * {{.Params.is_source_file}}
     * {{.Params.source_file_name}}
     * {{.Params.source_file_rel_name}}
     * {{.Params.source_file_hugo_full_name}}
     * {{.Params.source_file_full_name}}
     * {{.Params.source_file_ext}}
-    -->
+    * {{.Params.source_file_mimetype}}
+    * {{.Params.try_to_render}} -->
 
     <span class = "line-numbers">
 
@@ -92,6 +92,12 @@
         <video controls autoplay width="60%" class="center">
             <source src="{{.Params.source_file_full_name}}" type="video/mp4">
         </video>
+
+    {{else if and (eq .Params.source_file_mimetype "text/plain") (eq .Params.try_to_render "try")}}
+
+        {{$file_contents := (readFile .Params.source_file_hugo_full_name)}}
+        <pre>{{$file_contents}}</pre>
+
 
     {{else}}
 
