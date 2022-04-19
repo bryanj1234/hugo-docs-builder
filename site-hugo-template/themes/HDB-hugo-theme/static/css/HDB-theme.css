@@ -280,8 +280,8 @@ a:hover {
 }
 
 #sidebar_menu {
-    /* background-color: var(--MENU-ALT-BG-color); */
-    background-image: linear-gradient(to right, var(--TOP-BAR-BG-color-2) , var(--MENU-ALT-BG-color)); */
+    background-color: var(--MENU-ALT-BG-color);
+    /* background-image: linear-gradient(to right, var(--TOP-BAR-BG-color-2) , var(--MENU-ALT-BG-color)); */ */
     color: var(--MENU-SEARCH-BOX-color);
 /*     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
     border-top: 1px solid var(--MENU-HEADER-BORDER-color); */
